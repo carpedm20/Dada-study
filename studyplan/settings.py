@@ -23,9 +23,9 @@ SECRET_KEY = '4a9s4wn^4np*@1i+j!1*2clm^36zo=dgu5-&0wzt20jujd()cn'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -36,6 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'study',
+    'account',
+    'school',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,3 +83,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'account.Student'
+
