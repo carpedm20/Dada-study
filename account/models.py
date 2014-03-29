@@ -45,9 +45,6 @@ class Student(AbstractBaseUser):
     def __unicode__(self):
         return self.username
 
-    def gravatar(self):
-        return hashlib.md5(self.email).hexdigest()
-
 class Group(models.Model):
     name = models.CharField(max_length=200)
     user_set = models.ManyToManyField(Student, null=True)
