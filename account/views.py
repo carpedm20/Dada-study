@@ -9,18 +9,26 @@ from django.template.response import TemplateResponse
 from django.utils.functional import lazy
 from django.views.generic import CreateView
 
-from .forms import UserCreationForm
-from pinry.users.models import User
-
+from .forms import StudentCreateForm
 
 reverse_lazy = lambda name=None, *args: lazy(reverse, str)(name, args=args)
 
+def index(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return HttpResponseRedirect("/")
+    else:
+        form = RegistrationForm() 
+
+    return render(request, "shelf/register.html",  {'form': form,  })
 
 class CreateUser(CreateView):
     template_name = 'account/register.html'
     model = User
-    form_class = UserCreationForm
-    success_url = reverse_lazy('core:recent-pins')
+    form_class = UserCreateForm
+    success_url = reverse_lazy('core:index')
 
     def get(self, request, *args, **kwargs):
         if not settings.ALLOW_NEW_REGISTRATIONS:
@@ -32,7 +40,8 @@ class CreateUser(CreateView):
         redirect = super(CreateUser, self).form_valid(form)
         permissions = Permission.objects.filter(codename__in=['add_pin', 'add_image'])
         user = authenticate(username=form.cleaned_data['username'],
-                            password=form.cleaned_data['password'])
+                            password=form.cleaned_data['password'],
+                            password=form.cleaned_data['school'])
         user.user_permissions = permissions
         login(self.request, user)
         return redirect

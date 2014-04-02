@@ -10,11 +10,11 @@ urlpatterns = patterns('',
     # url(r'^$', 'studyplan.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', study.views.index);
+    url(r'^$', core.views.index);
 
-    url(r'^study/', include('study.urls')),
-    url(r'^school/', include('school.urls')),
-    url(r'^aaccount/', include('account.urls')),
+    url(r'^study/', include('core.urls', namespace='core')),
+    url(r'^school/', include('school.urls', namespace='school')),
+    url(r'^account/', include('account.urls', namespace='account')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
