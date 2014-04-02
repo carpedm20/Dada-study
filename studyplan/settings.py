@@ -23,7 +23,6 @@ SECRET_KEY = '4a9s4wn^4np*@1i+j!1*2clm^36zo=dgu5-&0wzt20jujd()cn'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
 ALLOWED_HOSTS = []
 
@@ -85,5 +84,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'account.Student'
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'articles/templates'),
+)
+
+if DEBUG:
+    MEDIA_URL = '/media/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static-only')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
 

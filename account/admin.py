@@ -1,15 +1,15 @@
+from django import forms
 from django.contrib import admin
 
-from account.models import Student
+from .models import Student, StudentGroup
 
+"""
 class UserCreationForm(forms.ModelForm):
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
-        model = MyUser
+        model = Student.user
         fields = ('email', 'school')
 
     def clean_password2(self):
@@ -29,10 +29,6 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 class UserChangeForm(forms.ModelForm):
-    """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    password hash display field.
-    """
     password = ReadOnlyPasswordHashField()
 
     class Meta:
@@ -46,7 +42,7 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 # Register your models here.
-class StudentAdmin(UserAdmin):
+class StudentAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
     form = UserChangeForm
     add_form = UserCreationForm
@@ -73,8 +69,11 @@ class StudentAdmin(UserAdmin):
     ordering = ('email',)
     filter_horizontal = ()
 
+"""
 # Now register the new UserAdmin...
-admin.site.register(Student, StudentAdmin)
+#admin.site.register(Student, StudentAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
-admin.site.unregister(Group)
+
+admin.site.register(Student)
+admin.site.register(StudentGroup)

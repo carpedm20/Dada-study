@@ -1,7 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 from school.models import * # School, Course
-from study.models import * # 
+from core.models import * # 
 
 class Student(models.Model):
     user = models.OneToOneField(User)
@@ -19,7 +20,7 @@ class Student(models.Model):
         if created:
             UserProfile.objects.create(user=instance)
 
-class UserGroup(models.Model):
+class StudentGroup(models.Model):
     name = models.CharField(max_length=200)
     user_set = models.ManyToManyField(Student, null=True)
 

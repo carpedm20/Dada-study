@@ -1,11 +1,24 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response, RequestContext, HttpResponseRedirect
 
 from account.forms import StudentCreateForm
 
 def index(request):
-    return render(request, "core/index.html",  {})
+    form = StudentCreateForm(request.POST or None)
+    context = RequestContext(request)
+    template = 'core/index.html'
+
+    if form.is_valid():
+        # `commit=False`: before save it to database, just keep it in memory
+        save_it = form.save(commit=False)
+        save_it.save()
+
+        messages.success(request, 'Thank you for joining')
+        return HttpResponseRedirect('/thank-you/')
+
+    return render_to_response(template, locals(), context_instance=context)
 
 # Create your views here.
+"""
 class CreateStudyGroup(JSONResponseMixin, LoginRequiredMixin, CreateView):
     template_name = None  # JavaScript-only view
     model = Group
@@ -27,3 +40,4 @@ class CreateStudyGroup(JSONResponseMixin, LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         return self.render_json_response({'error': form.errors})
+"""

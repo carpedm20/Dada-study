@@ -13,39 +13,16 @@ from .forms import StudentCreateForm
 
 reverse_lazy = lambda name=None, *args: lazy(reverse, str)(name, args=args)
 
-def index(request):
+def sign_in(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = StudentCreateForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             return HttpResponseRedirect("/")
     else:
-        form = RegistrationForm() 
+        form = StudentCreateForm() 
 
-    return render(request, "shelf/register.html",  {'form': form,  })
-
-class CreateUser(CreateView):
-    template_name = 'account/register.html'
-    model = User
-    form_class = UserCreateForm
-    success_url = reverse_lazy('core:index')
-
-    def get(self, request, *args, **kwargs):
-        if not settings.ALLOW_NEW_REGISTRATIONS:
-            messages.error(request, "The admin of this service is not allowing new registrations.")
-            return HttpResponseRedirect(reverse('core:recent-pins'))
-        return super(CreateUser, self).get(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        redirect = super(CreateUser, self).form_valid(form)
-        permissions = Permission.objects.filter(codename__in=['add_pin', 'add_image'])
-        user = authenticate(username=form.cleaned_data['username'],
-                            password=form.cleaned_data['password'],
-                            password=form.cleaned_data['school'])
-        user.user_permissions = permissions
-        login(self.request, user)
-        return redirect
-
+    return render(request, "/",  {'form': form,  })
 
 @login_required
 def logout_user(request):

@@ -4,7 +4,7 @@ from django.db import models
 class School(models.Model):
     name = models.CharField(max_length=200)
     logo_url = models.URLField(max_length=200, blank=True)
-    course_set = models.ManyToManyField('Course')
+    course_set = models.ManyToManyField('Course', blank=True)
 
     def __unicode__(self):
         return self.name

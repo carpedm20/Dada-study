@@ -4,7 +4,7 @@ from account.models import Student
 # Create your models here.
 class StudyGroup(models.Model):
     name = models.CharField(max_length=200)
-	details = models.CharField(max_length=300)
+    details = models.CharField(max_length=300)
 
     user_set = models.ManyToManyField(Student, null=True)
 
