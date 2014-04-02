@@ -1,18 +1,22 @@
-{% extends 'content_with_jumbotron.html' %}
+{% extends 'base.html' %}
 
-|{% block title %}GyuTae{% endblock %}
+{% block title %}GyuTae{% endblock %}
 
 {% block jumbotron %}
 
-<div class="col-sm-7">
-  <h1>Build software better, together.</h1>
-  <p>Powerful collaboration, code review, and code management for open source and private projects. Need private repositories? <a href='/plans'>Upgraded plans start at $7/mo.</a></p>
-</div>
-<div class="col-sm-5">
-  <form role="form" action="/account/sign_up/" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-  </form>
+<div class="jumbotron">
+  <div class="container">
+    <div class="col-sm-7">
+      <h1>Build software better, together.</h1>
+      <p>Powerful collaboration, code review, and code management for open source and private projects. Need private repositories? <a href='/plans'>Upgraded plans start at $7/mo.</a></p>
+    </div>
+    <div class="col-sm-5">
+      <form role="form" action="/account/sign_up/" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
@@ -30,7 +34,7 @@
       <img src="https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/1966738_588219427936385_1046387854_n.png" alt="HeXA logo" class="img-responsive img-circle">
     </div>
   </div>
-  <h2>Great collaboration starts with communication.</h2>
+  <h2>Great collaboration with communication.</h2>
   <p>Review changes, comment on lines of code, report issues, and plan the future of your project with discussion tools.</p>
 </div>
 <div class="col-sm-6 text-center">
@@ -44,18 +48,18 @@
 </div>
 <div class="col-sm-6 text-center">
   <div class="row">
-	<div class="col-xs-4 col-xs-offset-4">
-      <img src="https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/1966738_588219427936385_1046387854_n.png" alt="HeXA logo" class="img-responsive img-circle">
-	</div>
+	  <div class="col-xs-4 col-xs-offset-4">
+      <img src="https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/577271_350954321662898_46703201_n.png" alt="HeXA logo" class="img-responsive img-circle">
+	  </div>
   </div>
   <h2>World's largest open source community.</h2>
   <p>Share your projects with the world, get feedback, and contribute to millions of repositories hosted on GitHub.</p>
 </div>
 <div class="col-sm-6 text-center">
   <div class="row">
-	<div class="col-xs-4 col-xs-offset-4">
-      <img src="https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/577271_350954321662898_46703201_n.png" alt="HeXA logo" class="img-responsive img-circle">
-	</div>
+	  <div class="col-xs-4 col-xs-offset-4">
+      <img src="https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-ash3/t1.0-9/1966738_588219427936385_1046387854_n.png" alt="HeXA logo" class="img-responsive img-circle">
+	  </div>
   </div>
   <h2>Do more with powerful integrations.</h2>
   <p>Discover applications and tools that integrate with GitHub to help you and your team build software better, together.</p>
@@ -64,5 +68,7 @@
 {% endblock %}
 
 {% block footer %}
-<p>© Company 2014</p>
+Copyright © 2014 Kim Tae Hoon
+<br />
+Designed by carpedm20
 {% endblock %}

@@ -1,15 +1,31 @@
-{% extends 'content_with_jumbotron.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Login{% endblock %}
 
+{% block active_sign_in%}active{% endblock %}
+
 {% block below_jumbotron %}
 
-<div class="col-sm-5">
-  <form role="form" action="/account/sign_in/" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-  </form>
+<div class="container container-login">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <form class="form-signin" role="form" action="/account/sign_in/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" value="{{ next_url }}" name="next_url">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+    </div>
+  </div>
 </div>
 
-
+<div class="footer">
+  <div class="container">
+    <div class="text-center">
+      Copyright © 2014 Kim Tae Hoon
+      <br />
+      Designed by carpedm20
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -8,43 +8,56 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.utils.functional import lazy
 from django.views.generic import CreateView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .forms import StudentCreateForm, StudentAuthForm
+from core.views import index
 
 reverse_lazy = lambda name=None, *args: lazy(reverse, str)(name, args=args)
 
 def sign_in(request):
+    form = StudentAuthForm(data=request.POST)
+    template = 'account/sign_in.html'
+
+    if request.method == 'POST':
+        if form.is_valid():
+            print "Success login"
+            # `commit=False`: before save it to database, just keep it in memory
+            login(request, form.get_user())
+            # Success
+            return redirect('/')
+        else:
+            # Failure
+            print "Fail login"
+            return sign_in_view(request)
+
+    return sign_in_view(request)
+
+def sign_in_view(request):
     form = StudentAuthForm(request.POST or None)
     template = 'account/sign_in.html'
 
-    if form.is_valid():
-        # `commit=False`: before save it to database, just keep it in memory
-        save_it = form.save(commit=False)
-        save_it.save()
-
-        messages.success(request, 'Thank you for joining')
-        return HttpResponseRedirect('/thank-you/')
-
-    return render(request, template,  {'form': form,  })
+    return render(request, template, {'form': form,  })
+    
 
 def sign_up(request):
     if request.method == 'POST':
         form = StudentCreateForm(request.POST)
         if form.is_valid():
+            username = form.clean_username()
+            password = form.clean_password2()
             new_user = form.save()
-            return HttpResponseRedirect("/")
+            user = authenticate(username=username, password=password)
+            login(request, user)
+
+            return redirect("/")
     else:
         form = StudentCreateForm() 
 
     return render(request, "core/index.html",  {'form': form,  })
 
 @login_required
-def logout_user(request):
+def sign_out(request):
     logout(request)
     messages.success(request, 'You have successfully logged out.')
-    return HttpResponseRedirect(reverse('core:recent-pins'))
-
-
-def private(request):
-    return TemplateResponse(request, 'users/private.html', None)
+    return redirect('/')

@@ -1,4 +1,5 @@
 from django.shortcuts import render, render_to_response, RequestContext, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 from account.forms import StudentCreateForm
 
@@ -16,6 +17,20 @@ def index(request):
         return HttpResponseRedirect('/thank-you/')
 
     return render_to_response(template, locals(), context_instance=context)
+
+@login_required
+def submit(request):
+    if request.method == "POST":
+        ribbit_form = RibbitForm(data=request.POST)
+        next_url = request.POST.get("next_url", "/")
+        if ribbit_form.is_valid():
+            ribbit = ribbit_form.save(commit=False)
+            ribbit.user = request.user
+            ribbit.save()
+            return redirect(next_url)
+        else:
+            return public(request, ribbit_form)
+    return redirect('/')
 
 # Create your views here.
 """
