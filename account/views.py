@@ -8,12 +8,27 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.utils.functional import lazy
 from django.views.generic import CreateView
+from django.shortcuts import render
 
-from .forms import StudentCreateForm
+from .forms import StudentCreateForm, StudentAuthForm
 
 reverse_lazy = lambda name=None, *args: lazy(reverse, str)(name, args=args)
 
 def sign_in(request):
+    form = StudentAuthForm(request.POST or None)
+    template = 'account/sign_in.html'
+
+    if form.is_valid():
+        # `commit=False`: before save it to database, just keep it in memory
+        save_it = form.save(commit=False)
+        save_it.save()
+
+        messages.success(request, 'Thank you for joining')
+        return HttpResponseRedirect('/thank-you/')
+
+    return render(request, template,  {'form': form,  })
+
+def sign_up(request):
     if request.method == 'POST':
         form = StudentCreateForm(request.POST)
         if form.is_valid():
@@ -22,7 +37,7 @@ def sign_in(request):
     else:
         form = StudentCreateForm() 
 
-    return render(request, "/",  {'form': form,  })
+    return render(request, "core/index.html",  {'form': form,  })
 
 @login_required
 def logout_user(request):

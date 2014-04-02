@@ -1,5 +1,7 @@
 {% extends 'content_with_jumbotron.html' %}
 
+|{% block title %}GyuTae{% endblock %}
+
 {% block jumbotron %}
 
 <div class="col-sm-7">
@@ -7,7 +9,7 @@
   <p>Powerful collaboration, code review, and code management for open source and private projects. Need private repositories? <a href='/plans'>Upgraded plans start at $7/mo.</a></p>
 </div>
 <div class="col-sm-5">
-  <form role="form" action="/account/sign_in/" method="post">{% csrf_token %}
+  <form role="form" action="/account/sign_up/" method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
   </form>
