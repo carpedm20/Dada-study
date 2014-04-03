@@ -9,6 +9,17 @@
         {% include "navbar.html" %}
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">Welcome {{ user.username }}!</h1>
+
+          <h3>StudyGroup List</h3>
+          <div class="list-group">
+            {% for group in study_group_list %}
+              <a href="#" class="list-group-item">
+                {{ group.name }} - {{ group.details }}
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="badge">{{ group.user_set.all | length }}</span>
+              </a>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>

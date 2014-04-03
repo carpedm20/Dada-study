@@ -6,12 +6,24 @@ class StudyGroup(models.Model):
     name = models.CharField(max_length=200)
     details = models.CharField(max_length=300)
 
-    user_set = models.ManyToManyField(Student, null=True)
-
-    tag_set = models.ManyToManyField('Tag', null=True)
+    user_set = models.ManyToManyField(Student, blank=True, null=True)
+    event_set = models.ManyToManyField('Event', blank=True, null=True)
+    tag_set = models.ManyToManyField('Tag', blank=True, null=True)
 
     def __unicode__(self):
         return self.name
+
+class Event(models.Model):
+    name = models.CharField(max_length=30)
+    details = models.CharField(max_length=50)
+
+    start = models.DateTimeField()
+    end = models.DateTimeField(blank=True, null=True)
+
+    creator = models.ForeignKey(Student)
+
+    def __unicode__(self):
+        return "[%] %s" % (group.name, name)
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)

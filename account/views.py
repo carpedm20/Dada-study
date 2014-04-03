@@ -25,7 +25,7 @@ def sign_in(request):
             login(request, form.get_user())
             next_url = request.POST.get("next_url", "/")
 
-            return redirect(next_url)
+            return redirect('/')
         else:
             # Failure
             return sign_in_view(request)
@@ -59,5 +59,5 @@ def sign_up(request):
 @login_required
 def sign_out(request):
     logout(request)
-    messages.success(request, 'You have successfully logged out.')
+    #messages.success(request, 'You have successfully logged out.')
     return redirect('/')
