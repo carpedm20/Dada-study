@@ -21,14 +21,13 @@ def sign_in(request):
 
     if request.method == 'POST':
         if form.is_valid():
-            print "Success login"
-            # `commit=False`: before save it to database, just keep it in memory
-            login(request, form.get_user())
             # Success
-            return redirect('/')
+            login(request, form.get_user())
+            next_url = request.POST.get("next_url", "/")
+
+            return redirect(next_url)
         else:
             # Failure
-            print "Fail login"
             return sign_in_view(request)
 
     return sign_in_view(request)
@@ -44,6 +43,7 @@ def sign_up(request):
     if request.method == 'POST':
         form = StudentCreateForm(request.POST)
         if form.is_valid():
+            # `commit=False`: before save it to database, just keep it in memory
             username = form.clean_username()
             password = form.clean_password2()
             new_user = form.save()

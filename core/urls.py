@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'studyplan.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.index, name='home'),
+    url(r'^group/create/$', views.create_study_group, name='create_study'),
 )

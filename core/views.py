@@ -1,37 +1,52 @@
-from django.shortcuts import render, render_to_response, RequestContext, HttpResponseRedirect
+from django.shortcuts import render, redirect, render_to_response, RequestContext, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
+from .forms import StudyGroupForm
 from account.forms import StudentCreateForm
 
-def index(request):
+def index(request, auth_form=None, user_form=None):
     form = StudentCreateForm(request.POST or None)
     context = RequestContext(request)
-    template = 'core/index.html'
 
-    if form.is_valid():
-        # `commit=False`: before save it to database, just keep it in memory
-        save_it = form.save(commit=False)
-        save_it.save()
+    if request.user.is_authenticated():
+        return render(request,
+                      'core/home.html',
+                      {'auth_form': auth_form, 'user_form': user_form, })
+    """else:
+        if form.is_valid():
+            # `commit=False`: before save it to database, just keep it in memory
+            save_it = form.save(commit=False)
+            save_it.save()
 
-        messages.success(request, 'Thank you for joining')
-        return HttpResponseRedirect('/thank-you/')
+            messages.success(request, 'Thank you for joining')
+            return HttpResponseRedirect('/thank-you/')"""
 
-    return render_to_response(template, locals(), context_instance=context)
+    return render_to_response('core/index.html', locals(), context_instance=context)
 
 @login_required
-def submit(request):
-    if request.method == "POST":
-        ribbit_form = RibbitForm(data=request.POST)
-        next_url = request.POST.get("next_url", "/")
-        if ribbit_form.is_valid():
-            ribbit = ribbit_form.save(commit=False)
-            ribbit.user = request.user
-            ribbit.save()
-            return redirect(next_url)
-        else:
-            return public(request, ribbit_form)
-    return redirect('/')
+def create_study_group(request):
+    form = StudyGroupForm(request.POST or None)
+    context = RequestContext(request)
+    template = 'core/create_study.html'
 
+    if request.method == "POST":
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.save()
+
+            return redirect('/')
+        else:
+            return create_study_group_view(request)
+
+    return create_study_group_view(request)
+
+@login_required
+def create_study_group_view(request):
+    form = StudyGroupForm(request.POST or None)
+    template = 'core/create_study.html'
+
+    return render(request, template, {'form': form,  })
+ 
 # Create your views here.
 """
 class CreateStudyGroup(JSONResponseMixin, LoginRequiredMixin, CreateView):
