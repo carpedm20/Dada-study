@@ -9,7 +9,7 @@ class StudyGroupForm(forms.ModelForm):
     details = forms.CharField(label="Details")
 
     user_set = forms.ModelMultipleChoiceField(queryset=Student.objects.all())
-    tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
+    tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
  
     class Meta:
         model = StudyGroup
@@ -37,7 +37,8 @@ class StudyGroupForm(forms.ModelForm):
         for user in self.cleaned_data["user_set"]:
             group.user_set.add(user)
 
-        group.user_set.add(self._user)
+        print self._user
+        group.user_set.add(Student.objects.get(user=self._user))
 
         for tag in self.cleaned_data["tag_set"]:
             group.tag_set.add(tag)
@@ -54,9 +55,13 @@ class EventForm(forms.ModelForm):
     start = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
     end = forms.DateField(widget=forms.TextInput(attrs={'class':'datepicker'}))
 
+    allDay = forms.BooleanField(required=True)
+
+    studyGroup = forms.ModelChoiceField(queryset=StudyGroup.objects.all(), empty_label="Choose your study group")
+ 
     class Meta:
         model = StudyGroup
-        fields = ['name', 'details', 'start', 'end']
+        fields = ['name', 'details', 'start', 'end', 'allDay', 'studyGroup']
 
     def __init__(self, user=None, *args, **kwargs):
         self._user = user
@@ -73,16 +78,24 @@ class EventForm(forms.ModelForm):
         if not self._user:
             return None
 
-        group = StudyGroup(name = self.cleaned_data["name"],
-                           details = self.cleaned_data["details"],
-                           start = self.cleaned_data["start"],
-                           end = self.cleaned_data["end"],
-                           creator = self._user)
-        group.save()
+        event = Event(name = self.cleaned_data["name"],
+                      details = self.cleaned_data["details"],
+                      start = self.cleaned_data["start"],
+                      end = self.cleaned_data["end"],
+                      creator = Student.objects.get(user=self._user))
+
+        #event.start = self.cleaned_data["start"]
+        #event.end = end = self.cleaned_data["end"]
+        #event.creator = self._user
+
+        event.save()
+
+        studyGroup = self.cleaned_data["studyGroup"]
+        studyGroup.event_set.add(event)
 
         #if commit:
-        #    group.save()
+        #    event.save()
 
-        return group
+        return event
 
 

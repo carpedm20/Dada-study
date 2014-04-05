@@ -17,13 +17,13 @@ class StudentCreateForm(UserCreationForm):
     #username2 = forms.EmailField(label="Confirm E-mail", widget=forms.widgets.TextInput(attrs={'placeholder': 'Username'}))
     password1 = forms.CharField(widget=forms.widgets.PasswordInput(attrs={'placeholder': 'Password'}))
     password2 = forms.CharField(widget=forms.widgets.PasswordInput(attrs={'placeholder': 'Password Confirmation'}))
-    school = forms.ModelChoiceField(queryset=School.objects.all(), empty_label="Please choose a university")
+    school = forms.ModelChoiceField(queryset=School.objects.all(), empty_label="Please choose a university", required=False)
  
     def is_valid(self):
         form = super(StudentCreateForm, self).is_valid()
-        for f, error in self.errors.iteritems():
-            if f != '__all_':
-                self.fields[f].widget.attrs.update({'class': 'error', 'value': strip_tags(error)})
+        #for f, error in self.errors.iteritems():
+        #    if f != '__all_':
+        #        self.fields[f].widget.attrs.update({'class': 'error', 'value': strip_tags(error)})
         return form
  
     class Meta:

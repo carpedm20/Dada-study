@@ -1,5 +1,8 @@
 from django.db import models
+from django.utils.encoding import smart_unicode
+
 from account.models import Student
+
 
 # Create your models here.
 class StudyGroup(models.Model):
@@ -20,10 +23,13 @@ class Event(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
 
+    allDay = models.BooleanField(default=True)
+
     creator = models.ForeignKey(Student)
 
     def __unicode__(self):
-        return "[%] %s" % (group.name, name)
+        #return "[%] %s" % (smart_unicode(self.name), self.details)
+        return smart_unicode(self.name)
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)

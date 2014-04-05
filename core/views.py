@@ -1,12 +1,20 @@
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, render_to_response, RequestContext, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.utils import simplejson as json
+from django.utils import timezone
+from django import http
 
+from .models import Event
 from .forms import StudyGroupForm, EventForm
 from account.forms import StudentCreateForm
 from account.models import Student
 
 def get_student_from_user(user):
-    return Student.objects.get(user=user) or None
+    try:
+        return Student.objects.get(user=user)
+    except:
+        return None
 
 ########################
 # Index
@@ -18,6 +26,12 @@ def index(request, auth_form=None, user_form=None):
 
     if request.user.is_authenticated():
         current_student = get_student_from_user(request.user)
+
+        if current_student is None:
+            logout(request)
+            redirect('/')
+        else:
+            print current_student
 
         study_group_list = current_student.studygroup_set.all()
 
@@ -66,7 +80,7 @@ def create_study_group_view(request):
 def create_event(request):
     form = EventForm(data=request.POST or None, user=request.user)
     context = RequestContext(request)
-    template = 'core/create_study_group.html'
+    template = 'core/create_event.html'
 
     if request.method == "POST":
         if form.is_valid():
@@ -76,9 +90,9 @@ def create_event(request):
 
             return redirect('/')
         else:
-            return create_study_group_view(request)
+            return create_event_view(request)
 
-    return create_study_group_view(request)
+    return create_event_view(request)
 
 @login_required
 def create_event_view(request):
@@ -108,30 +122,29 @@ def get_event_as_json(request):
 
     for event in events: 
         # It retrieves dates in the correct time horaire 
-        event_start  =  event . start . astimezone ( timezone . get_default_timezone ()) 
-        event_end  =  event . end . astimezone ( timezone . get_default_timezone ())
+        event_start = event.start.astimezone(timezone.get_default_timezone()) 
+        event_end = event.end.astimezone(timezone.get_default_timezone())
 
         # It was decided that if the event starts at midnight is a 
         # on the event day 
-        if  event_start . hour  ==  0  and  event_start . minute  ==  0 : 
-            Allday  =  True 
-        else : 
-            Allday  =  False
+        if event_start.hour == 0 and event_start.minute == 0: 
+            Allday = True 
+        else: 
+            Allday = False
 
-        if  not  event . is_cancelled : 
-            event_list . append ({ 
-                    'id' :  event . id , 
-                    'start' :  event_start . strftime ( '%Y-%m- %d %H:%M:%S' ), 
-                    'end' :  event_end . strftime ( '%Y-%m- %d %H:%M:%S' ), 
-                    'title' :  event . title , 
-                    'allDay' :  allDay 
+        #if not event.is_cancelled : 
+        event_list.append ({ 
+                    'id':  event.id , 
+                    'start':  event_start.strftime ( '%Y-%m- %d %H:%M:%S' ), 
+                    'end':  event_end.strftime ( '%Y-%m- %d %H:%M:%S' ), 
+                    'title':  event.name, 
+                    'allDay': True 
                     })
 
-    if  len ( event_list )  ==  0 : 
-        raise  http . Http404 
+    if len(event_list)  ==  0 : 
+        raise http.Http404 
     else : 
-        return  http . HttpResponse ( json . dumps ( event_list ), 
-                                 content_type = 'application/json' )
+        return http.HttpResponse(json.dumps(event_list), content_type = 'application/json' )
  
 # Create your views here.
 """
