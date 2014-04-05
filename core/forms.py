@@ -1,6 +1,8 @@
 from django import forms
 from django.utils.html import strip_tags
 
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
+
 from .models import StudyGroup, Event, Tag
 from account.models import Student
 

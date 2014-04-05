@@ -37,7 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'south',
+    'django_summernote',
 
+    'board',
     'core',
     'account',
     'school',

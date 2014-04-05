@@ -18,4 +18,6 @@ urlpatterns = patterns('',
 
     url(r'^group/event/calendar/$', views.view_calendar, name='view_calendar'),
     url(r'^group/event/get_event.json$', views.get_event_as_json, name='get_event_as_json'),
+
+    url(r'^group/board/edit/$', include('django_summernote.urls')),
 )
