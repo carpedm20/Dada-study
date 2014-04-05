@@ -10,11 +10,7 @@ from .forms import StudyGroupForm, EventForm
 from account.forms import StudentCreateForm
 from account.models import Student
 
-def get_student_from_user(user):
-    try:
-        return Student.objects.get(user=user)
-    except:
-        return None
+from utils.func import *
 
 ########################
 # Index

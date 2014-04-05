@@ -12,6 +12,8 @@ urlpatterns = patterns('',
 
     url(r'^$', views.index, name='home'),
 
+    url(r'^board/', include('board.urls')),
+
     url(r'^group/create/$', views.create_study_group, name='create_study_group'),
 
     url(r'^group/event/create/$', views.create_event, name='create_event'),

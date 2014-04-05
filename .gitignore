@@ -18,4 +18,5 @@ scrapper
 *.sqlite
 
 # etc
+run.sh
 cheatsheet.md
