@@ -8,10 +8,6 @@ from account.models import Student
 def get_student_from_user(user):
     return Student.objects.get(user=user) or None
 
-########################
-# Index
-########################
-
 def index(request, auth_form=None, user_form=None):
     form = StudentCreateForm(request.POST or None)
     context = RequestContext(request)
@@ -28,10 +24,6 @@ def index(request, auth_form=None, user_form=None):
                        'study_group_list' : study_group_list})
 
     return render_to_response('core/index.html', locals(), context_instance=context)
-
-########################
-# Create Study Group
-########################
 
 @login_required
 def create_study_group(request):
@@ -58,10 +50,6 @@ def create_study_group_view(request):
 
     return render(request, template, {'form': form,  })
 
-########################
-# Event
-########################
-
 @login_required
 def create_event(request):
     form = EventForm(data=request.POST or None, user=request.user)
@@ -87,9 +75,9 @@ def create_event_view(request):
 
     return render(request, template, {'form': form,  })
 
-########################
+###############
 # Calendar
-########################
+###############
 
 @login_required
 def view_calendar(request):

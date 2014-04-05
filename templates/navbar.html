@@ -1,8 +1,8 @@
 
 <div class="col-sm-3 col-md-2 sidebar">
   <ul class="nav nav-sidebar">
-    <li class="{% block create_study_group %}{% endblock %}"><a href="{% url 'core:create_study_group' %}">Create study group</a></li>
-    <li class=""><a href="#">Calendar</a></li>
+    <li class="{% block active_create_study_group %}{% endblock %}"><a href="{% url 'core:create_study_group' %}">Create study group</a></li>
+    <li class="{% block active_calendar %}{% endblock %}"><a href="{% url 'core:view_calendar' %}">Calendar</a></li>
   </ul>
   <ul class="nav nav-sidebar">
     <li class=""><a href="#">StudyList</a></li>

@@ -8,6 +8,7 @@ local_settings.py
 
 # static
 media
+data
 
 # scrapper
 scrapper

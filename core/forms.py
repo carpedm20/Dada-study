@@ -16,8 +16,8 @@ class StudyGroupForm(forms.ModelForm):
         fields = ['name', 'details', 'user_set', 'tag_set']
 
     def __init__(self, user=None, *args, **kwargs):
-        super(EventForm, self).__init__(*args, **kwargs)
         self._user = user
+        super(StudyGroupForm, self).__init__(*args, **kwargs)
 
     def is_valid(self):
         form = super(StudyGroupForm, self).is_valid()
@@ -59,8 +59,8 @@ class EventForm(forms.ModelForm):
         fields = ['name', 'details', 'start', 'end']
 
     def __init__(self, user=None, *args, **kwargs):
-        super(EventForm, self).__init__(*args, **kwargs)
         self._user = user
+        super(EventForm, self).__init__(*args, **kwargs)
 
     def is_valid(self):
         form = super(EventForm, self).is_valid()

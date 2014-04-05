@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='home'),
     url(r'^group/create/$', views.create_study_group, name='create_study_group'),
     url(r'^group/event/create/$', views.create_study_group, name='create_event'),
+    url(r'^group/event/calendar/$', views.view_calendar, name='view_calendar'),
 )
