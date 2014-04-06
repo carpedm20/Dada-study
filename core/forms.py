@@ -10,12 +10,12 @@ class StudyGroupForm(forms.ModelForm):
     name = forms.CharField(label="Group name")
     details = forms.CharField(label="Details")
 
-    user_set = forms.ModelMultipleChoiceField(queryset=Student.objects.all())
+    student_set = forms.ModelMultipleChoiceField(queryset=Student.objects.all())
     tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
  
     class Meta:
         model = StudyGroup
-        fields = ['name', 'details', 'user_set', 'tag_set']
+        fields = ['name', 'details', 'student_set', 'tag_set']
 
     def __init__(self, user=None, *args, **kwargs):
         self._user = user
@@ -36,11 +36,11 @@ class StudyGroupForm(forms.ModelForm):
                            details = self.cleaned_data["details"])
         group.save()
 
-        for user in self.cleaned_data["user_set"]:
-            group.user_set.add(user)
+        for user in self.cleaned_data["student_set"]:
+            group.student_set.add(user)
 
         print self._user
-        group.user_set.add(Student.objects.get(user=self._user))
+        group.student_set.add(Student.objects.get(user=self._user))
 
         for tag in self.cleaned_data["tag_set"]:
             group.tag_set.add(tag)

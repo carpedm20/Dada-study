@@ -1,9 +1,30 @@
 
 <div class="col-sm-3 col-md-2 sidebar">
   <ul class="nav nav-sidebar">
-    <li class="{% block active_home %}{% endblock %}"><a href="{% url 'core:home' %}">Home</a></li>
-    <li class="{% block active_create_study_group %}{% endblock %}"><a href="{% url 'core:create_study_group' %}">Create study group</a></li>
+    <li class="{% block active_student %}{% endblock %}">
+      <a href="{% url 'core:home' %}">
+        <img class="img-responsive img-thumbnail" src="{{ user.student.gravatar_url }}" /> {{ user.username}}
+      </a>
+    </li>
+    {% if user.student.school %}
+      <li class="{% block active_school %}{% endblock %}">
+        <a href="{% url 'core:home' %}">
+          <!--<img class="img-thumbnail" style="width:50" src="{{ user.student.school.logo_url }}" />-->
+          {{ user.student.school }}
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+  <ul class="nav nav-sidebar">
+    {% for study_group in user.student.studygroup_set.all %}
+      <li class=""><a href="{% url 'core:view_study_group' study_group.id %}">{{ study_group.name }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <ul class="nav nav-sidebar">
     <li class="{% block active_calendar %}{% endblock %}"><a href="{% url 'core:view_calendar' %}">Calendar</a></li>
+
+    <li class="{% block active_create_study_group %}{% endblock %}"><a href="{% url 'core:create_study_group' %}">Create study group</a></li>
     <li class="{% block active_create_event %}{% endblock %}"><a href="{% url 'core:create_event' %}">Create event</a></li>
     <li class="{% block active_create_board %}{% endblock %}"><a href="{% url 'core:create_board' %}">Create board</a></li>
     <li class="{% block active_create_post %}{% endblock %}"><a href="{% url 'core:create_post' %}">Create post</a></li>

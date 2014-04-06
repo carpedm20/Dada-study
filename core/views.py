@@ -9,6 +9,7 @@ from .models import Event
 from .forms import StudyGroupForm, EventForm
 from account.forms import StudentCreateForm
 from account.models import Student
+from core.models import StudyGroup
 
 from utils.func import *
 
@@ -40,6 +41,17 @@ def index(request, auth_form=None, user_form=None):
     return render_to_response('core/index.html', locals(), context_instance=context)
 
 ########################
+# View study group
+########################
+
+@login_required
+def view_study_group(request, study_group_id):
+    study_group = StudyGroup.objects.get(id=study_group_id)
+    template = 'core/view_study_group.html'
+
+    return render(request, template, {'study_group': study_group,  })
+
+########################
 # Create Study Group
 ########################
 
@@ -52,7 +64,6 @@ def create_study_group(request):
     if request.method == "POST":
         if form.is_valid():
             group = form.save(commit=False)
-            #group.user_set.
             group.save()
 
             return redirect('/')
@@ -81,7 +92,6 @@ def create_event(request):
     if request.method == "POST":
         if form.is_valid():
             group = form.save(commit=False)
-            #group.user_set.
             group.save()
 
             return redirect('/')

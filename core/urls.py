@@ -14,6 +14,7 @@ urlpatterns = patterns('',
 
     url(r'^board/', include('board.urls')),
 
+    url(r'^group/(?P<study_group_id>\d+)$', views.view_study_group, name='view_study_group'),
     url(r'^group/create/$', views.create_study_group, name='create_study_group'),
 
     url(r'^group/event/create/$', views.create_event, name='create_event'),
@@ -22,4 +23,6 @@ urlpatterns = patterns('',
     url(r'^group/event/get_event.json$', views.get_event_as_json, name='get_event_as_json'),
 
     url(r'^group/board/edit/$', include('django_summernote.urls')),
+
+    url(r'^articles/comments/', include('django.contrib.comments.urls')),
 )

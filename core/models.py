@@ -9,7 +9,7 @@ class StudyGroup(models.Model):
     name = models.CharField(max_length=200)
     details = models.CharField(max_length=300)
 
-    user_set = models.ManyToManyField(Student, blank=True, null=True)
+    student_set = models.ManyToManyField(Student, blank=True, null=True)
     event_set = models.ManyToManyField('Event', blank=True, null=True)
     tag_set = models.ManyToManyField('Tag', blank=True, null=True)
     board_set = models.ManyToManyField(Board, null=True)

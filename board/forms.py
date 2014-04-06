@@ -3,6 +3,7 @@ from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
 from .models import Post, Board, PostTag
 from core.models import StudyGroup
+from account.models import Student
 
 class BoardForm(forms.ModelForm):
     name = forms.CharField(label="Board name")
@@ -29,9 +30,9 @@ class BoardForm(forms.ModelForm):
         if not self._user:
             return None
 
-        baord = BoardForm(name = self.cleaned_data["name"],
-                          details = self.cleaned_data["details"],
-                          creator = Student.objects.get(user=self._user))
+        board = Board(name = self.cleaned_data["name"],
+                      details = self.cleaned_data["details"],
+                      creator = Student.objects.get(user=self._user))
         board.save()
 
         study_group = self.cleaned_data["study_group"]
@@ -46,14 +47,13 @@ class BoardForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     name = forms.CharField(label="Post name")
     content = forms.CharField(widget=SummernoteWidget())
-
     
     board = forms.ModelChoiceField(queryset=Board.objects.all(), required=True)
-    post_tag = forms.ModelMultipleChoiceField(queryset=PostTag.objects.all(), required=False)
+    tag_set = forms.ModelMultipleChoiceField(queryset=PostTag.objects.all(), required=False)
  
     class Meta:
         model = Post
-        fields = ['name', 'content', 'board', 'post_tag']
+        fields = ['name', 'content', 'board', 'tag_set']
 
     def __init__(self, user=None, *args, **kwargs):
         self._user = user
@@ -70,9 +70,9 @@ class PostForm(forms.ModelForm):
         if not self._user:
             return None
 
-        post = PostForm(name = self.cleaned_data["name"],
-                        content = self.cleaned_data["content"],
-                        creator = Student.objects.get(user=self._user))
+        post = Post(name = self.cleaned_data["name"],
+                    content = self.cleaned_data["content"],
+                    creator = Student.objects.get(user=self._user))
         post.save()
 
         for tag in self.cleaned_data["tag_set"]:

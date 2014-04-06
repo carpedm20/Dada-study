@@ -7,6 +7,30 @@ from .forms import BoardForm, PostForm
 from utils.func import *
 
 ########################
+# List board
+########################
+
+@login_required
+def list_board(request):
+    form = BoardForm(data=request.POST or None, user=request.user)
+
+    context = RequestContext(request)
+    template = 'core/create_board.html'
+
+    if request.method == "POST":
+        if form.is_valid():
+            board = form.save(commit=False)
+            board.save()
+
+            return redirect('/')
+        else:
+            return create_board_view(request)
+
+    return create_board_view(request)
+
+
+
+########################
 # Create board
 ########################
 
@@ -20,7 +44,6 @@ def create_board(request):
     if request.method == "POST":
         if form.is_valid():
             board = form.save(commit=False)
-            #group.user_set.
             board.save()
 
             return redirect('/')
@@ -51,7 +74,6 @@ def create_post(request):
     if request.method == "POST":
         if form.is_valid():
             post = form.save(commit=False)
-            #group.user_set.
             post.save()
 
             return redirect('/')

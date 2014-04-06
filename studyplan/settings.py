@@ -102,6 +102,16 @@ if DEBUG:
         os.path.join(BASE_DIR, 'static'),
     )
 
+#######################
+# Comment
+#######################
+
+COMMENTS_APP = 'threadedcomments'
+
+################################
+# Summernote configuration
+################################
+
 SUMMERNOTE_CONFIG = {
     # Using SummernoteWidget - iframe mode
     'iframe': False,  # or set False to use SummernoteInplaceWidget - no iframe mode

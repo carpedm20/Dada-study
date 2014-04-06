@@ -11,7 +11,7 @@
       <p>Powerful collaboration, code review, and code management for open source and private projects. Need private repositories? <a href='/plans'>Upgraded plans start at $7/mo.</a></p>
     </div>
     <div class="col-sm-5">
-      <form role="form" action="/account/sign_up/" method="post">{% csrf_token %}
+      <form role="form-horizontal" action="/account/sign_up/" method="post">{% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
       </form>

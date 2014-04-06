@@ -5,7 +5,7 @@ from core.models import Student
 # Create your models here.
 class Board(models.Model):
     name = models.CharField(max_length=200)
-    details = models.TextField(max_length=300)
+    details = models.CharField(max_length=300)
 
     post_set = models.ManyToManyField('Post', blank=True, null=True)
 
