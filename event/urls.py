@@ -10,9 +10,9 @@ urlpatterns = patterns('',
     # url(r'^$', 'studyplan.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^create/$', views.create_board, name='create_board'),
-    url(r'^list/$', views.list_board, name='list_board'),
-    url(r'^post/create/$', views.create_post, name='create_post'),
+    url(r'^create/$', views.create_event, name='create_event'),
+    url(r'^calendar/$', views.view_calendar, name='view_calendar'),
+    url(r'^get_event.json$', views.get_event_as_json, name='get_event_as_json'),
 
     url(r'^post/view/(?P<post_id>\d+)$', views.view_post, name='view_post'),
 )

@@ -1,3 +1,6 @@
+import uuid
+import base64
+
 from django.db import models
 from django.utils.encoding import smart_unicode
 
@@ -10,7 +13,9 @@ class StudyGroup(models.Model):
     name = models.CharField(max_length=200)
     details = models.CharField(max_length=300)
 
-    student_set = models.ManyToManyField(Student, blank=True, null=True)
+    student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='studygroup_set')
+    bookmarked_student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='bookmarked_student_set')
+
     event_set = models.ManyToManyField('Event', blank=True, null=True)
     tag_set = models.ManyToManyField(Tag, blank=True, null=True)
     board_set = models.ManyToManyField(Board, null=True)
@@ -18,23 +23,12 @@ class StudyGroup(models.Model):
     creator = models.ForeignKey(Student, related_name='study_group_creator')
     leader = models.ManyToManyField(Student, related_name='leader')
 
+    unique_id = models.CharField(max_length=100, null=True, blank=True, unique=True)
+
+    def __init__(self, *args, **kwargs):
+        super(StudyGroup, self).__init__(*args, **kwargs)
+
+        self.unique_id = base64.b64encode(str(uuid.uuid4()))[:10]
+
     def __unicode__(self):
         return self.name
-
-class Event(models.Model):
-    name = models.CharField(max_length=30)
-    details = models.CharField(max_length=50)
-
-    start = models.DateTimeField()
-    end = models.DateTimeField(blank=True, null=True)
-
-    allDay = models.BooleanField(default=True)
-
-    creator = models.ForeignKey(Student, related_name='event_creator')
-    assigned_to = models.ManyToManyField(Student, related_name='assigned_to')
-
-    tag_set = models.ManyToManyField(Tag, blank=True, null=True)
-
-    def __unicode__(self):
-        #return "[%] %s" % (smart_unicode(self.name), self.details)
-        return smart_unicode(self.name)

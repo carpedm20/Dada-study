@@ -12,16 +12,13 @@ urlpatterns = patterns('',
 
     url(r'^$', views.index, name='home'),
 
-    url(r'^board/', include('board.urls')),
+    url(r'^(?P<study_group_id>\w+)/$', views.view_study_group, name='view_study_group'),
 
-    url(r'^group/(?P<study_group_id>\d+)$', views.view_study_group, name='view_study_group'),
-    url(r'^group/create/$', views.create_study_group, name='create_study_group'),
-    url(r'^group/join/$', views.join_study_group, name='join_study_group'),
+    url(r'^create/$', views.create_study_group, name='create_study_group'),
+    url(r'^join/$', views.join_study_group, name='join_study_group'),
 
-    url(r'^group/event/create/$', views.create_event, name='create_event'),
-
-    url(r'^group/event/calendar/$', views.view_calendar, name='view_calendar'),
-    url(r'^group/event/get_event.json$', views.get_event_as_json, name='get_event_as_json'),
+    url(r'^(?P<study_group_id>\w+)/board/', include('board.urls')),
+    url(r'^(?P<study_group_id>\w+)/event/', include('event.urls')),
 
     url(r'^group/board/edit/$', include('django_summernote.urls')),
 

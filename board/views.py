@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from .forms import BoardForm, PostForm
+from .models import Post
 
 from utils.func import *
 
@@ -28,7 +29,24 @@ def list_board(request):
 
     return create_board_view(request)
 
+########################
+# View post
+########################
 
+@login_required
+def view_post(request, , study_group_id, post_id):
+    context = RequestContext(request)
+    template = 'board/view_board.html'
+
+    study_group = StudyGroup.objects.get(id=study_group_id)
+
+    try:
+        post = Post.objects.get(id=post_id)
+        print post
+        return render(request, template, {'post': post, })
+
+    except:
+        return redirect('/')
 
 ########################
 # Create board

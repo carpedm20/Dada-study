@@ -10,7 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^$', 'core.views.index'),
 
-    url(r'^study/', include('core.urls', namespace='core')),
+    url(r'^s/', include('core.urls', namespace='core')),
     url(r'^school/', include('school.urls', namespace='school')),
     url(r'^account/', include('account.urls', namespace='account')),
 

@@ -34,7 +34,8 @@ class StudyGroupForm(forms.ModelForm):
 
         group = StudyGroup(name = self.cleaned_data["name"],
                            details = self.cleaned_data["details"],
-                           creator = self._user)
+                           creator = self._user,
+                           leader = self._user)
         group.save()
 
         for user in self.cleaned_data["student_set"]:
