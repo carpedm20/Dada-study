@@ -1,9 +1,10 @@
 from django import forms
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
-from .models import Post, Board, PostTag
+from .models import Post, Board
 from core.models import StudyGroup
 from account.models import Student
+from tag.models import Tag
 
 class BoardForm(forms.ModelForm):
     name = forms.CharField(label="Board name")
@@ -49,7 +50,7 @@ class PostForm(forms.ModelForm):
     content = forms.CharField(widget=SummernoteWidget())
     
     board = forms.ModelChoiceField(queryset=Board.objects.all(), required=True)
-    tag_set = forms.ModelMultipleChoiceField(queryset=PostTag.objects.all(), required=False)
+    tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
  
     class Meta:
         model = Post

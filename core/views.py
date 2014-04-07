@@ -30,15 +30,51 @@ def index(request, auth_form=None, user_form=None):
         else:
             print current_student
 
-        study_group_list = current_student.studygroup_set.all()
+        # Study group for current User
+        #study_group_list = current_student.studygroup_set.all()
+
+        study_group_list = StudyGroup.objects.all()
+        student_list = Student.objects.all()
+
+        for group in study_group_list:
+            if group in current_student.studygroup_set.all():
+                group.isJoined = True
+            else:
+                group.isJoined = False
+
+        for student in student_list:
+            if student in current_student.friends.all():
+                student.isFriend = True
+            else:
+                student.isFriend = False
 
         return render(request,
                       'core/home.html',
                       {'auth_form': auth_form,
                        'user_form': user_form,
+                       'student_list': student_list,
                        'study_group_list' : study_group_list})
 
     return render_to_response('core/index.html', locals(), context_instance=context)
+
+########################
+# View study group
+########################
+
+@login_required
+def join_study_group(request):
+    if request.method == 'POST':
+        group_id = request.POST.get("group_id", "")
+        group = StudyGroup.objects.get(id=group_id)
+
+        current_student = get_student_from_user(request.user) 
+
+        if group in current_student.studygroup_set.all():
+          current_student.studygroup_set.remove(group)
+        else:
+          current_student.studygroup_set.add(group)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 ########################
 # View study group

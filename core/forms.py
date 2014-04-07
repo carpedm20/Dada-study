@@ -33,13 +33,13 @@ class StudyGroupForm(forms.ModelForm):
             return None
 
         group = StudyGroup(name = self.cleaned_data["name"],
-                           details = self.cleaned_data["details"])
+                           details = self.cleaned_data["details"],
+                           creator = self._user)
         group.save()
 
         for user in self.cleaned_data["student_set"]:
             group.student_set.add(user)
 
-        print self._user
         group.student_set.add(Student.objects.get(user=self._user))
 
         for tag in self.cleaned_data["tag_set"]:

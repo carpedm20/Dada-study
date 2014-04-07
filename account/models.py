@@ -10,7 +10,7 @@ class Student(models.Model):
     user = models.OneToOneField(User)
 
     school = models.ForeignKey(School, null=True)
-    follows = models.ManyToManyField('self', related_name='followed_by', symmetrical=False, null=True)
+    friends = models.ManyToManyField('self', symmetrical=True, null=True)
 
     def __unicode__(self):
         return self.user.username

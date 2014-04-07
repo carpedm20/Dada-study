@@ -16,6 +16,7 @@ urlpatterns = patterns('',
 
     url(r'^group/(?P<study_group_id>\d+)$', views.view_study_group, name='view_study_group'),
     url(r'^group/create/$', views.create_study_group, name='create_study_group'),
+    url(r'^group/join/$', views.join_study_group, name='join_study_group'),
 
     url(r'^group/event/create/$', views.create_event, name='create_event'),
 

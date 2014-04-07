@@ -10,14 +10,75 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">Welcome {{ user.username }}!</h1>
 
-          <h3>StudyGroup List</h3>
           <div class="list-group">
+            <div class="list-group-item active">
+              <h4 class="list-group-item-heading">
+                Study Group list
+              </h4>
+            </div>
             {% for group in study_group_list %}
-              <a href="{% url 'core:view_study_group' group.id %}" class="list-group-item">
-                {{ group.name }} - {{ group.details }}
-                <span class="glyphicon glyphicon-chevron-right"></span>
-                <span class="badge">{{ group.student_set.all | length }}</span>
-              </a>
+              <div class="list-group-item">
+                <button type="button" class="btn btn-info btn-lg pull-right">
+                  <span class="glyphicon glyphicon-bookmark"></span> Bookmark
+                </button>
+
+                <form role="form" action="{% url 'core:join_study_group' %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" value="{{ group.id }}" name="group_id">
+                  {% if group.isJoined %}
+                    <button type="submit" class="group-join-btn btn btn-success btn-lg pull-right" style="margin-right: 10px;">
+                      Joined
+                  {% else %}
+                    <button type="submit" class="group-join-btn btn btn-primary btn-lg pull-right" style="margin-right: 10px;">
+                      Join
+                  {% endif %}
+                  </button>
+                </form>
+
+                <h4 class="list-group-item-heading">
+                  <a href="{% url 'core:view_study_group' group.id %}"> {{ group.name }} </a>
+                </h4>
+                <p class="list-group-item-text">
+                  {{ group.details }} | <a href="#">{{ group.creator }}</a>
+                </p>
+
+                <!--<span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="badge">{{ group.student_set.all | length }}</span>-->
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="list-group">
+            <div class="list-group-item active">
+              <h4 class="list-group-item-heading">
+                User list
+              </h4>
+            </div>
+            {% for student in student_list %}
+              <div class="list-group-item">
+                <form role="form" action="{% url 'account:follow' %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" value="{{ student }}" name="username">
+                    {% if student.isFriend %}
+                  <button type="submit" class="student-follow-btn btn btn-success btn-lg pull-right">
+                      Friend
+                    {% else %}
+                  <button type="submit" class="student-follow-btn btn btn-primary btn-lg pull-right">
+                      Follow
+                    {% endif %}
+                  </button>
+                </form>
+
+                <h4 class="list-group-item-heading">
+                  <a href="#"> {{ student }} </a>
+                </h4>
+                <p class="list-group-item-text">
+                  {{ student.school }}
+                </p>
+
+                <!--<span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="badge">{{ group.student_set.all | length }}</span>-->
+              </div>
             {% endfor %}
           </div>
         </div>

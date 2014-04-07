@@ -12,8 +12,28 @@ from django.shortcuts import render, redirect
 
 from .forms import StudentCreateForm, StudentAuthForm
 from core.views import index
+from utils.func import *
 
 reverse_lazy = lambda name=None, *args: lazy(reverse, str)(name, args=args)
+
+@login_required
+def follow(request):
+    if request.method == 'POST':
+        username = request.POST.get("username", "")
+        student = get_student_from_usernme(username)
+
+        current_student = get_student_from_user(request.user) 
+
+        if student in current_student.friends.all():
+          current_student.friends.remove(student)
+        else:            
+          current_student.friends.add(student)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+########################
+# Sign in (Log in)
+########################
 
 def sign_in(request):
     form = StudentAuthForm(data=request.POST)
@@ -32,12 +52,20 @@ def sign_in(request):
 
     return sign_in_view(request)
 
+##############################
+# Sign in View (Log in View)
+##############################
+
 def sign_in_view(request):
     form = StudentAuthForm(request.POST or None)
     template = 'account/sign_in.html'
 
     return render(request, template, {'form': form,  })
     
+
+########################
+# Sign up (Join)
+########################
 
 def sign_up(request):
     if request.method == 'POST':
@@ -55,6 +83,10 @@ def sign_up(request):
         form = StudentCreateForm() 
 
     return render(request, "core/index.html",  {'form': form,  })
+
+########################
+# Sign out (Log out)
+########################
 
 @login_required
 def sign_out(request):

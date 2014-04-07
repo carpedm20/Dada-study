@@ -17,6 +17,9 @@ scrapper
 *.json
 *.sqlite
 
+# node.js
+node*
+
 # etc
 run.sh
 testcase.py

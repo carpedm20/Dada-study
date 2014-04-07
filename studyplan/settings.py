@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'core',
     'account',
     'school',
+    'tag',
 )
 
 MIDDLEWARE_CLASSES = (

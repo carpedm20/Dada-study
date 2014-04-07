@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     url(r'^school/', include('school.urls', namespace='school')),
     url(r'^account/', include('account.urls', namespace='account')),
 
+
+    url(r'^chat/', include('chat.urls', namespace='chat')),
+
     (r'^summernote/', include('django_summernote.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
