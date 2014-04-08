@@ -1,5 +1,8 @@
 from django.db import models
 
+from account.models import Student
+from tag.models import Tag
+
 class Event(models.Model):
     name = models.CharField(max_length=30)
     details = models.CharField(max_length=50)

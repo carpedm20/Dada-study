@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'account',
     'school',
     'tag',
+    'event',
 )
 
 MIDDLEWARE_CLASSES = (

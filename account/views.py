@@ -16,6 +16,10 @@ from utils.func import *
 
 reverse_lazy = lambda name=None, *args: lazy(reverse, str)(name, args=args)
 
+########################
+# Follow friends
+########################
+
 @login_required
 def follow(request):
     if request.method == 'POST':

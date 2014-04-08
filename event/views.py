@@ -1,4 +1,7 @@
+from django.shortcuts import render, redirect, render_to_response, RequestContext, HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 
 from .models import Event
 
@@ -35,7 +38,7 @@ def create_event_view(request):
 ########################
 
 @login_required
-def view_calendar(request):
+def view_calendar(request, study_group_id=None):
     #form = EventForm(data=request.POST or None, user=request.user)
     template = 'core/view_calendar.html'
 

@@ -58,6 +58,17 @@ def index(request, auth_form=None, user_form=None):
     return render_to_response('core/index.html', locals(), context_instance=context)
 
 ########################
+# Calendar
+########################
+
+@login_required
+def view_calendar(request, study_group_id=None):
+    #form = EventForm(data=request.POST or None, user=request.user)
+    template = 'core/view_calendar.html'
+
+    return render(request, template, {})
+
+########################
 # View study group
 ########################
 
@@ -81,8 +92,8 @@ def join_study_group(request):
 ########################
 
 @login_required
-def view_study_group(request, study_group_id):
-    study_group = StudyGroup.objects.get(id=study_group_id)
+def view_study_group(request, unique_id):
+    study_group = StudyGroup.objects.get(unique_id=unique_id)
     template = 'core/view_study_group.html'
 
     return render(request, template, {'study_group': study_group,  })

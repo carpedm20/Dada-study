@@ -1,15 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title %}Create board{% endblock %}
-
-{% block active_create_board %}active{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content_with_nav %}
 
     <div class="container-fluid">
       <div class="row">
         {% include "navbar.html" %}
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <div class="col-sm-3 col-sm-offset-3 col-md-2 col-md-offset-2 sidebar inner-sidebar">
+            <ul class="nav nav-list">
+            {% for board in study_group.user_set.all %}
+            {% endfor %}
+            {% for board in study_group.board_set.all %}
+              <!--<li class="dropdown">-->
+                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ board }}<b class="caret"></b></a>-->
+                <li class="nav-header">{{ board }}</li>
+                <!--<ul class="dropdown-menu">-->
+                  {% for post in board.post_set.all %}
+                    <li><a href="{% url 'board:view_post' study_group.unique_id post.id %}">{{ post.name }}</a></li>
+                  {% endfor %}
+                    <li><a href="{% url 'board:view_post' study_group.unique_id post.id %}"><span class="glyphicon glyphicon-plus"></span>{{ post.name }}</a></li>
+                <!--</ul>-->
+              <!--</li>-->
+            {% endfor %}
+            </ul>
+
+          <!--Drop down version
+          <ul class="nav nav-sidebar">
+            {% for board in study_group.user_set.all %}
+            {% endfor %}
+            {% for board in study_group.board_set.all %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ board }}<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  {% for post in board.post_set.all %}
+                    <li><a href="#">{{ post.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endfor %}
+          <ul>-->
+        </div>
+ 
+        <div class="col-sm-6 col-sm-offset-6 col-md-8 col-md-offset-4 main">
           <form class="form-signin" role="form" action="{% url 'core:create_board' %}" method="post"> {% csrf_token %}
             {{ form.as_p }}
             <input type="hidden" value="{{ next_url }}" name="next_url">

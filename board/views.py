@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import BoardForm, PostForm
 from .models import Post
+from core.models import StudyGroup
 
 from utils.func import *
 
@@ -34,16 +35,16 @@ def list_board(request):
 ########################
 
 @login_required
-def view_post(request, , study_group_id, post_id):
+def view_post(request, study_group_id, post_id):
     context = RequestContext(request)
     template = 'board/view_board.html'
 
-    study_group = StudyGroup.objects.get(id=study_group_id)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
 
     try:
         post = Post.objects.get(id=post_id)
         print post
-        return render(request, template, {'post': post, })
+        return render(request, template, {'study_group': study_group,'post': post, })
 
     except:
         return redirect('/')
