@@ -24,7 +24,7 @@
 
                 <form role="form" action="{% url 'core:join_study_group' %}" method="post">
                   {% csrf_token %}
-                  <input type="hidden" value="{{ group.id }}" name="group_id">
+                  <input type="hidden" value="{{ group.unique_id}}" name="group_unique_id">
                   {% if group.isJoined %}
                     <button type="submit" class="group-join-btn btn btn-success btn-lg pull-right" style="margin-right: 10px;">
                       Joined
@@ -36,7 +36,7 @@
                 </form>
 
                 <h4 class="list-group-item-heading">
-                  <a href="{% url 'core:view_study_group' group.id %}"> {{ group.name }} </a>
+                  <a href="{% url 'core:view_study_group' group.unique_id %}"> {{ group.name }} </a>
                 </h4>
                 <p class="list-group-item-text">
                   {{ group.details }} | <a href="#">{{ group.creator }}</a>

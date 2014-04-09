@@ -75,8 +75,8 @@ def view_calendar(request, study_group_id=None):
 @login_required
 def join_study_group(request):
     if request.method == 'POST':
-        group_id = request.POST.get("group_id", "")
-        group = StudyGroup.objects.get(id=group_id)
+        group_unique_id = request.POST.get("group_unique_id", "")
+        group = StudyGroup.objects.get(unique_id=group_unique_id)
 
         current_student = get_student_from_user(request.user) 
 

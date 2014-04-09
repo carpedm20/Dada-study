@@ -8,23 +8,20 @@ from tag.models import Tag
 
 class BoardForm(forms.ModelForm):
     name = forms.CharField(label="Board name")
-    details = forms.CharField(label="Details")
-
-    study_group = forms.ModelChoiceField(queryset=StudyGroup.objects.all(), required=True)
+    details = forms.CharField(label="Details", widget=forms.Textarea)
 
     class Meta:
         model = Board
-        fields = ['name', 'details', 'study_group']
+        fields = ['name', 'details']
 
-    def __init__(self, user=None, *args, **kwargs):
+    def __init__(self, user=None, study_group=None , *args, **kwargs):
         self._user = user
+        self._study_group = study_group
         super(BoardForm, self).__init__(*args, **kwargs)
 
     def is_valid(self):
         form = super(BoardForm, self).is_valid()
-        #for f, error in self.errors.iteritems():
-        #    if f != '__all_':
-        #        self.fields[f].widget.attrs.update({'class': 'error', 'value': strip_tags(error)})
+
         return form
 
     def save(self, commit=True):
@@ -36,9 +33,8 @@ class BoardForm(forms.ModelForm):
                       creator = Student.objects.get(user=self._user))
         board.save()
 
-        study_group = self.cleaned_data["study_group"]
-        study_group.board_set.add(board)
-        study_group.save()
+        self._study_group.board_set.add(board)
+        self._study_group.save()
 
         #if commit:
         #    group.save()
@@ -49,25 +45,41 @@ class PostForm(forms.ModelForm):
     name = forms.CharField(label="Post name")
     content = forms.CharField(widget=SummernoteWidget())
     
-    board = forms.ModelChoiceField(queryset=Board.objects.all(), required=True)
     tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
  
     class Meta:
         model = Post
-        fields = ['name', 'content', 'board', 'tag_set']
+        fields = ['name', 'content', 'tag_set']
 
-    def __init__(self, user=None, *args, **kwargs):
+    def __init__(self, user=None, board_id=None, post_id=None, *args, **kwargs):
         self._user = user
+
+        if board_id:
+            self._board = Board.objects.get(id=board_id)
+
+        if post_id:
+            self._post = Post.objects.get(id=post_id)
+
         super(PostForm, self).__init__(*args, **kwargs)
 
     def is_valid(self):
         form = super(PostForm, self).is_valid()
-        #for f, error in self.errors.iteritems():
-        #    if f != '__all_':
-        #        self.fields[f].widget.attrs.update({'class': 'error', 'value': strip_tags(error)})
+
         return form
 
     def save(self, commit=True):
+        if self._post:
+            self._post.name = self.cleaned_data["name"]
+            self._post.content = self.cleaned_data["content"]
+
+            self._post.tag_set.all().delete()
+            for tag in self.cleaned_data["tag_set"]:
+                self._post.tag_set.add(tag)
+
+            self._post.save()
+
+            return self._post
+
         if not self._user:
             return None
 
@@ -81,8 +93,45 @@ class PostForm(forms.ModelForm):
 
         post.save()
 
+        try:
+            self._board.post_set.add(post)
+        except:
+            pass
+
         #if commit:
         #    group.save()
 
         return post
 
+
+class CommentForm(forms.ModelForm):
+    #content = forms.CharField(widget=SummernoteWidget())
+    content = forms.CharField(widget=forms.Textarea)
+    
+    class Meta:
+        model = Post
+        fields = ['content']
+
+    def __init__(self, user=None, post_id=None, *args, **kwargs):
+        self._user = user
+        self._post = Post.objects.get(id=post_id)
+        super(CommentForm, self).__init__(*args, **kwargs)
+
+    def is_valid(self):
+        form = super(CommentForm, self).is_valid()
+        return form
+
+    def save(self, commit=True):
+        if not self._user:
+            return None
+
+        post = Post(content = self.cleaned_data["content"],
+                    creator = Student.objects.get(user=self._user))
+        post.save()
+
+        self._post.comment_set.add(post)
+
+        #if commit:
+        #    group.save()
+
+        return post
