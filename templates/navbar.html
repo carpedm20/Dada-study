@@ -19,6 +19,9 @@
     {% for study_group in user.student.studygroup_set.all %}
       <li class=""><a href="{% url 'core:view_study_group' study_group.unique_id %}">{{ study_group.name }}</a></li>
     {% endfor %}
+    <li class="col-xs-10 col-xs-offset-1 text-center">
+      <button class="btn btn-sm btn-success btn-block"onclick="location.href='{% url 'core:create_study_group' %}'">Create group</button>
+    </li>
   </ul>
 
   <ul class="nav nav-sidebar">

@@ -6,6 +6,8 @@ from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 from .models import StudyGroup, Event, Tag
 from account.models import Student
 
+from utils.func import get_student_from_user
+
 class StudyGroupForm(forms.ModelForm):
     name = forms.CharField(label="Group name")
     details = forms.CharField(label="Details")
@@ -32,11 +34,14 @@ class StudyGroupForm(forms.ModelForm):
         if not self._user:
             return None
 
+        student = get_student_from_user(self._user)
+
         group = StudyGroup(name = self.cleaned_data["name"],
                            details = self.cleaned_data["details"],
-                           creator = self._user,
-                           leader = self._user)
+                           creator = student)
         group.save()
+
+        group.leader.add(student)
 
         for user in self.cleaned_data["student_set"]:
             group.student_set.add(user)
@@ -45,6 +50,8 @@ class StudyGroupForm(forms.ModelForm):
 
         for tag in self.cleaned_data["tag_set"]:
             group.tag_set.add(tag)
+
+        group.save()
             
         #if commit:
         #    group.save()

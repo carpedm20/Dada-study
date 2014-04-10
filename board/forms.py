@@ -68,7 +68,7 @@ class PostForm(forms.ModelForm):
         return form
 
     def save(self, commit=True):
-        if self._post:
+        try:
             self._post.name = self.cleaned_data["name"]
             self._post.content = self.cleaned_data["content"]
 
@@ -79,6 +79,8 @@ class PostForm(forms.ModelForm):
             self._post.save()
 
             return self._post
+        except:
+            pass
 
         if not self._user:
             return None

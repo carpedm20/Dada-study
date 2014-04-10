@@ -51,7 +51,7 @@ def view_post(request, study_group_id, post_id, board_id=None):
         for comment in post.comment_set.all():
             comment.content = comment.content.replace('\r\n','<br />')
 
-        return render(request, template, {'form': form, 'study_group': study_group,'post': post, 'board_id': post.board.id})
+        return render(request, template, {'form': form, 'study_group': study_group,'post': post, 'board_id': post.board.id, 'user': request.user})
 
     except:
         for e in sys.exc_info():

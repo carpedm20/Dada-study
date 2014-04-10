@@ -1,7 +1,10 @@
        <div class="col-sm-3 col-sm-offset-3 col-md-2 col-md-offset-2 sidebar inner-sidebar">
             <ul class="nav nav-list">
-            {% for board in study_group.user_set.all %}
-            {% endfor %}
+              <li class="nav-header"><a href="#">Users</a></li>
+              {% for user in study_group.student_set.all %}
+                <a href="#"><img src="{{ user.gravatar_small_url }}" /></a>
+              {% endfor %}
+              <li class="nav-header"><a href="#">Calendar</a></li>
             {% for board in study_group.board_set.all %}
               <!--<li class="dropdown">-->
                 <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ board }}<b class="caret"></b></a>-->

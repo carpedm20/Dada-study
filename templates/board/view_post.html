@@ -10,12 +10,14 @@
         {% include "sub_navbar.html" %}
 
         <div class="col-sm-6 col-sm-offset-6 col-md-8 col-md-offset-4 main">
-          <button type="button" class="btn btn-info btn-lg pull-right" onclick="location.href='{% url 'edit_post' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}'">
-            <span class="glyphicon glyphicon-edit"></span> Edit post
-          </button>
+          {% if post.creator.user == user %}
+            <button type="button" class="btn btn-info btn-lg pull-right" onclick="location.href='{% url 'edit_post' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}'">
+              <span class="glyphicon glyphicon-edit"></span> Edit post
+            </button>
+          {% endif %}
 
           <h2>{{ post }}</h2>
-          <p>작성자 : {{ post.creator }} | {{ post.created_at }}</p>
+          <p>작성자 : <a href="#">{{ post.creator }}</a> | {{ post.created_at }}</p>
 
           <div class="well">
             <h4>Content</h4>
@@ -28,6 +30,11 @@
 
           {% for comment in post.comment_set.all %}
           <div class="well">
+            {% if comment.creator.user == user %}
+              <div class="pull-right">
+                <button type="button" class="btn btn-success btn-sm"/>Edit</button>
+              </div>
+            {% endif %}
             <div class="pull-left">
               <img class="img-responsive img-thumbnail comment-thumbnail" src="{{ comment.creator.gravatar_small_url }}">
             </div>

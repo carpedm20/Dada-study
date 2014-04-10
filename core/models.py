@@ -24,13 +24,16 @@ class StudyGroup(models.Model):
     creator = models.ForeignKey(Student, related_name='study_group_creator')
     leader = models.ManyToManyField(Student, related_name='leader')
 
+    is_private = models.BooleanField(default=False)
+
     unique_id = models.CharField(max_length=100, null=True, blank=True, unique=True)
 
     #def __init__(self, *args, **kwargs):
     #    super(StudyGroup, self).__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.unique_id = base64.b64encode(str(uuid.uuid4()))[:10]
+        if not self.unique_id:
+            self.unique_id = base64.b64encode(str(uuid.uuid4()))[:10]
         super(StudyGroup, self).save(*args, **kwargs)
 
     def __unicode__(self):
