@@ -1,7 +1,7 @@
 from django import forms
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
-from .models import Post, Board
+from .models import Post, Board, Comment
 from core.models import StudyGroup
 from account.models import Student
 from tag.models import Tag
@@ -106,7 +106,7 @@ class PostForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     #content = forms.CharField(widget=SummernoteWidget())
-    content = forms.CharField(widget=forms.Textarea)
+    content = forms.CharField(widget=forms.Textarea(attrs={'width': '100%', 'cols': 100, 'rows': 5}))
     
     class Meta:
         model = Post
@@ -125,13 +125,13 @@ class CommentForm(forms.ModelForm):
         if not self._user:
             return None
 
-        post = Post(content = self.cleaned_data["content"],
-                    creator = Student.objects.get(user=self._user))
-        post.save()
+        comment = Comment(content = self.cleaned_data["content"].replace('\r\n','<br />'),
+                          creator = Student.objects.get(user=self._user))
+        comment.save()
 
-        self._post.comment_set.add(post)
+        self._post.comment_set.add(comment)
 
         #if commit:
         #    group.save()
 
-        return post
+        return comment

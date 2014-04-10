@@ -18,6 +18,9 @@ class Student(models.Model):
     def gravatar_url(self):
         return "http://www.gravatar.com/avatar/%s?s=50" % hashlib.md5(self.user.username).hexdigest()
 
+    def gravatar_small_url(self):
+        return "http://www.gravatar.com/avatar/%s?s=33" % hashlib.md5(self.user.username).hexdigest()
+
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             UserProfile.objects.create(user=instance)

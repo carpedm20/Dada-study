@@ -47,12 +47,34 @@ def view_post(request, study_group_id, post_id, board_id=None):
 
     try:
         post = Post.objects.get(id=post_id)
+
+        for comment in post.comment_set.all():
+            comment.content = comment.content.replace('\r\n','<br />')
+
         return render(request, template, {'form': form, 'study_group': study_group,'post': post, 'board_id': post.board.id})
 
     except:
         for e in sys.exc_info():
             print e
         return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'unique_id':study_group_id,}))
+
+
+########################
+# Create comment
+########################
+
+@login_required
+def create_comment(request, study_group_id, post_id, board_id=None):
+    form = CommentForm(data=request.POST or None, user=request.user, post_id=post_id)
+    context = RequestContext(request)
+
+    if request.method == "POST":
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 ########################
 # Create board

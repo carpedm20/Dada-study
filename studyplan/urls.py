@@ -22,9 +22,11 @@ urlpatterns = patterns('',
     # BOARD
     ###############
     url(BOARD + r'create/$', b_views.create_board, name='create_board'),
+
     url(BOARD + r'list/$', b_views.list_board, name='list_board'),
     url(BOARD + r'(?P<board_id>\d+)/create/$', b_views.create_post, name='create_post'),
-    url(BOARD + r'(?P<board_id>\d+)/edit/(?P<post_id>\d+)$', b_views.edit_post, name='edit_post'),
+    url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/edit/$', b_views.edit_post, name='edit_post'),
+    url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/comment/$', b_views.create_comment, name='create_comment'),
 
     url(BOARD + r'(?P<board_id>\d+)/view/(?P<post_id>\d+)$', b_views.view_post, name='view_post'),
 

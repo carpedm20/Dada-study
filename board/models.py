@@ -30,8 +30,10 @@ class Post(models.Model):
 class Comment(models.Model):
     content = models.TextField(blank=False)
 
+    post = models.ForeignKey(Post, blank=True, null=True)
+
     creator = models.ForeignKey(Student)
     created_at  = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.name
+        return self.content
