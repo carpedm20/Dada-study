@@ -54,6 +54,18 @@ Progress
   - models
     - tag
   - views
+7. File
+  - models
+    - file
+  -views
+
+Todo
+----
+
+- Tag : filter_tag, add_tag, delete_tag
+- School : school_index, school_study_group
+- Event : event_complete, event_decomplete
+- Board : file_upload, file_delete, file_info
 
 
 Copyright
