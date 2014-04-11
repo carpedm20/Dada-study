@@ -3,7 +3,14 @@
 {% block title %}Home{% endblock %}
 
 {% block content_with_nav %}
-
+  <script type="text/javascript"> 
+    function confirm_delete_post() {
+      var conf= confirm('Are you sure to delete this post');
+      if (conf) {
+        location.href='{% url 'delete_post' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}';
+      }
+    }
+  </script>
     <div class="container-fluid">
       <div class="row">
         {% include "navbar.html" %}
@@ -11,7 +18,10 @@
 
         <div class="col-sm-6 col-sm-offset-6 col-md-8 col-md-offset-4 main">
           {% if post.creator.user == user %}
-            <button type="button" class="btn btn-info btn-lg pull-right" onclick="location.href='{% url 'edit_post' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}'">
+            <button type="button" class="btn btn-warning btn-lg pull-right" onclick='confirm_delete_post();'">
+              <span class="glyphicon glyphicon-trash"></span> Delete post
+            </button>
+            <button type="button" class="btn btn-info btn-lg pull-right edit-post-btn" onclick="location.href='{% url 'edit_post' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}'">
               <span class="glyphicon glyphicon-edit"></span> Edit post
             </button>
           {% endif %}

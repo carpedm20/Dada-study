@@ -3,7 +3,7 @@ from django.utils.html import strip_tags
 
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
-from .models import StudyGroup, Event, Tag
+from .models import StudyGroup, Tag
 from account.models import Student
 
 from utils.func import get_student_from_user
@@ -14,10 +14,12 @@ class StudyGroupForm(forms.ModelForm):
 
     student_set = forms.ModelMultipleChoiceField(queryset=Student.objects.all())
     tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
+
+    is_private = forms.BooleanField(label="Private group")
  
     class Meta:
         model = StudyGroup
-        fields = ['name', 'details', 'student_set', 'tag_set']
+        fields = ['name', 'details', 'student_set', 'tag_set', 'is_private']
 
     def __init__(self, user=None, *args, **kwargs):
         self._user = user
@@ -38,7 +40,8 @@ class StudyGroupForm(forms.ModelForm):
 
         group = StudyGroup(name = self.cleaned_data["name"],
                            details = self.cleaned_data["details"],
-                           creator = student)
+                           creator = student,
+                           is_private = self.cleaned_data["is_private"])
         group.save()
 
         group.leader.add(student)

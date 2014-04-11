@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(BOARD + r'list/$', b_views.list_board, name='list_board'),
     url(BOARD + r'(?P<board_id>\d+)/create/$', b_views.create_post, name='create_post'),
     url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/edit/$', b_views.edit_post, name='edit_post'),
+    url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/delete/$', b_views.delete_post, name='delete_post'),
     url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/comment/$', b_views.create_comment, name='create_comment'),
 
     url(BOARD + r'(?P<board_id>\d+)/view/(?P<post_id>\d+)$', b_views.view_post, name='view_post'),
@@ -42,6 +43,7 @@ urlpatterns = patterns('',
     url(EVENT + r'get/$', e_views.get_event_as_json, name='get_event'),
     #url(EVENT + r'view/$', e_views.view_calendar, name='view_calendar'),
     url(EVENT + r'edit/$', e_views.edit_event, name='edit_event'),
+    url(EVENT + r'delete/$', e_views.delete_event, name='delete_event'),
     url(EVENT + r'create/$', e_views.create_event, name='create_event'),
 
 

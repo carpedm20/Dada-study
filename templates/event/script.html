@@ -1,5 +1,7 @@
 <script type="text/javascript"> 
 
+var border_color = '#378006'
+
 $(document).ready(function() {
   var student_list = [];
   var email_list = [];
@@ -29,6 +31,7 @@ $(document).ready(function() {
 
     selectable: true,
     selectHelper: true,
+    eventColor: border_color,
 
     editable: true,
 
@@ -45,6 +48,8 @@ $(document).ready(function() {
 
         for (var i=0; i<option.length; i++) {
           var num = parseInt(option[i] - 1);
+          if (num > option.length || num < 0)
+            continue;
           assigned_list.push(email_list[num]);
           assigned_list_as_string += student_list[num] + " ,";
         }
@@ -103,6 +108,8 @@ $(document).ready(function() {
       }
     ],*/
     eventClick: function(calEvent, jsEvent, view) {
+      $(this).css('border-color', 'red');
+
       var title = calEvent.title.split('-')[0].trim();
       var isDelete = confirm('Are you sure to delete "' + title + '"');
       
@@ -110,17 +117,17 @@ $(document).ready(function() {
         jQuery.post(
           '{% url 'delete_event' study_group_id=study_group.unique_id %}',
           {
-            id: event.id,
-            dayDelta: dayDelta,
-            minuteDelta: minuteDelta,
+            id: calEvent.id,
           }
         );
+        $(this).remove()
+      } else {
+        $(this).css('border-color', border_color);
       }
       //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
       //alert('View: ' + view.name);
 
       // change the border color just for fun
-      $(this).css('border-color', 'red');
     },
     eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc) {
       if (!confirm("Are you sure about this change?")) {

@@ -1,5 +1,6 @@
 from django.db import models
 
+from core.models import StudyGroup
 from account.models import Student
 from tag.models import Tag
 
@@ -15,6 +16,7 @@ class Event(models.Model):
     creator = models.ForeignKey(Student, related_name='event_creator')
     assigned_to = models.ManyToManyField(Student, related_name='assigned_to')
 
+    study_group = models.ForeignKey(StudyGroup, null=True)
     tag_set = models.ManyToManyField(Tag, blank=True, null=True)
 
     def __unicode__(self):

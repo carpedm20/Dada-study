@@ -39,7 +39,7 @@ def create_event(request, study_group_id=None):
         start = dateutil.parser.parse(start_timestamp)
         end = dateutil.parser.parse(end_timestamp)
 
-        event = Event(name=title, details='', start=start, end=end, creator=current_student)
+        event = Event(name=title, details='', start=start, end=end, creator=current_student, study_group=study_group)
         event.save()
 
         for email in assigned_list:
@@ -116,17 +116,9 @@ def delete_event(request, study_group_id=None):
 
     if request.is_ajax() and request.method == "POST":
         id = request.POST.get('id')
-        dayDelta = int(request.POST.get('dayDelta'))
-        minuteDelta = int(request.POST.get('minuteDelta'))
 
         event = Event.objects.get(id=id)
-
-        event.start = event.start + datetime.timedelta(days=dayDelta) \
-                                  + datetime.timedelta(minutes=dayDelta)
-        event.end = event.end + datetime.timedelta(days=dayDelta) \
-                              + datetime.timedelta(minutes=dayDelta)
-
-        event.save()
+        event.delete()
 
         data = "success"
     else:

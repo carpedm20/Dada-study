@@ -75,6 +75,22 @@ def create_comment(request, study_group_id, post_id, board_id=None):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+########################
+# Delete comment
+########################
+
+@login_required
+def delete_comment(request, study_group_id, comment_id=None):
+    instance = Commet.objects.get(id=comment_id)
+    context = RequestContext(request)
+
+    if request.method == "POST":
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.save()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 ########################
 # Create board
@@ -164,6 +180,17 @@ def edit_post(request, study_group_id=None, board_id=None, post_id=None):
             return edit_post_view(request, study_group, board_id, post_id)
 
     return edit_post_view(request, study_group, board_id, post_id)
+
+########################
+# Delete post
+########################
+
+@login_required
+def delete_post(request, study_group_id=None, board_id=None, post_id=None):
+    instance = Post.objects.get(id=post_id)
+    instance.delete()
+
+    return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'study_group_id':study_group_id,}))
 
 @login_required
 def edit_post_view(request, study_group, board_id, post_id):

@@ -3,7 +3,14 @@
                 <li class="nav-header">{{ study_group.name }}</li>
                 <!--<li class="nav-header"><a href="#">Users</a></li>-->
                 {% for student in study_group.student_set.all %}
-                  <li><a class="sub_nav_gravatar" href="#"><img src="{{ student.gravatar_small_url }}" /> {{ student.get_id }}</a></li>
+                  <li>
+                    <a class="sub_nav_gravatar" href="#"><img src="{{ student.gravatar_small_url }}" /> {{ student.get_id }}</a>
+                    {% for event in student.assigned_to.all %}
+                      {% if event.study_group == study_group %}
+                        {{ event }}
+                      {% endif %}
+                    {% endfor %}
+                  </li>
                 {% endfor %}
                 <li class="nav-header"><a href="{% url 'view_calendar' study_group_id=study_group.unique_id %}">Calendar</a></li>
             {% for board in study_group.board_set.all %}

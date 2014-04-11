@@ -5,7 +5,6 @@ from django.utils import timezone
 from django import http
 import json
 
-from .models import Event
 from .forms import StudyGroupForm, EventForm
 from account.forms import StudentCreateForm
 from account.models import Student

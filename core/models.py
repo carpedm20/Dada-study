@@ -7,7 +7,6 @@ from django.utils.encoding import smart_unicode
 from account.models import Student
 from board.models import Board
 from tag.models import Tag
-from event.models import Event
 
 # Create your models here.
 class StudyGroup(models.Model):
@@ -17,7 +16,6 @@ class StudyGroup(models.Model):
     student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='studygroup_set')
     bookmarked_student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='bookmarked_student_set')
 
-    event_set = models.ManyToManyField(Event, blank=True, null=True)
     tag_set = models.ManyToManyField(Tag, blank=True, null=True)
     board_set = models.ManyToManyField(Board, null=True)
 
