@@ -31,17 +31,17 @@ Progress
     - create_cmment
     - view_post
 3. Event
-  -models
+  - models
     - event
-  -views
+  - views
     - get_event_as_json
     - edit_event
     - delete_event
     - create_event
 4. School
-  -models
-    -school
-  -views
+  - models
+    - school
+  - views
 5. Account
   - models
     - student
