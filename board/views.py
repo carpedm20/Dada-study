@@ -125,7 +125,7 @@ def create_post(request, study_group_id=None, board_id=None):
             post = form.save(commit=False)
             post.save()
 
-            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'unique_id':study_group_id,}))
+            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'study_group_id':study_group_id,}))
         else:
             return create_post_view(request, study_group, board_id)
 
@@ -159,7 +159,7 @@ def edit_post(request, study_group_id=None, board_id=None, post_id=None):
             post = form.save()
             #post.save()
 
-            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'unique_id':study_group_id,}))
+            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'study_group_id':study_group_id,}))
         else:
             return edit_post_view(request, study_group, board_id, post_id)
 

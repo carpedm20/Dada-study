@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+from core import views as c_views
 from board import views as b_views
 from event import views as e_views
 
@@ -36,8 +37,13 @@ urlpatterns = patterns('',
     # EVENT
     ###############
 
+    url(EVENT + r'view/$', c_views.view_study_group, name='view_calendar'),
+
     url(EVENT + r'get/$', e_views.get_event_as_json, name='get_event'),
+    #url(EVENT + r'view/$', e_views.view_calendar, name='view_calendar'),
+    url(EVENT + r'edit/$', e_views.edit_event, name='edit_event'),
     url(EVENT + r'create/$', e_views.create_event, name='create_event'),
+
 
     url(r'^s/', include('core.urls', namespace='core')),
 

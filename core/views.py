@@ -92,8 +92,8 @@ def join_study_group(request):
 ########################
 
 @login_required
-def view_study_group(request, unique_id):
-    study_group = StudyGroup.objects.get(unique_id=unique_id)
+def view_study_group(request, study_group_id=None):
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
     template = 'core/view_study_group.html'
 
     return render(request, template, {'study_group': study_group,  })

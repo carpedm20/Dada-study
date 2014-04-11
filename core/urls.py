@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^create/$', views.create_study_group, name='create_study_group'),
     url(r'^join/$', views.join_study_group, name='join_study_group'),
 
-    url(r'^(?P<unique_id>\w+)/$', views.view_study_group, name='view_study_group'),
+    url(r'^(?P<study_group_id>\w+)/$', views.view_study_group, name='view_study_group'),
 
     url(r'^group/board/edit/$', include('django_summernote.urls')),
 

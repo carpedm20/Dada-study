@@ -102,6 +102,20 @@ $(document).ready(function() {
         textColor: 'black' // a non-ajax option
       }
     ],*/
+    eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc) {
+      if (!confirm("Are you sure about this change?")) {
+        revertFunc();
+      } else {
+        jQuery.post(
+          '{% url 'edit_event' study_group_id=study_group.unique_id %}',
+          {
+            id: event.id,
+            dayDelta: dayDelta,
+            minuteDelta: minuteDelta,
+          }
+        );
+      }
+    },
     events: function(start, end, callback) {
       $.ajax({
         url: '{% url 'get_event' study_group.unique_id %}',
@@ -129,6 +143,7 @@ $(document).ready(function() {
 
             events.push({
               // title: $(this).attr('title') + "\r\n" + student_list,
+              id: $(this).attr('id'),
               title: $(this).attr('title') + " - " + student_list_as_string,
               start: $(this).attr('start'),
               end: $(this).attr('end'),

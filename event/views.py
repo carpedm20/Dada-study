@@ -5,6 +5,7 @@ from django import http
 from django.http import HttpResponse
 from django.utils import timezone
 import json
+import datetime
 
 import dateutil.parser
 from utils.func import *
@@ -22,36 +23,32 @@ def create_event(request, study_group_id=None):
     study_group = StudyGroup.objects.get(unique_id=study_group_id)
 
     if request.is_ajax() and request.method == "POST":
-        try:
-            title = request.POST.get('title')
-            start_timestamp = request.POST.get('start')
-            end_timestamp = request.POST.get('end')
-            allDay = request.POST.get('allDay')
-            assigned_list = request.POST.get('assigned_list')
+        title = request.POST.get('title')
+        start_timestamp = request.POST.get('start')
+        end_timestamp = request.POST.get('end')
+        allDay = request.POST.get('allDay')
+        assigned_list = request.POST.get('assigned_list')
 
-            assigned_list = assigned_list.split(',')
+        assigned_list = assigned_list.split(',')
 
-            if allDay is 'true':
-                allDay = True
-            else:
-                allDay = False
+        if allDay is 'true':
+            allDay = True
+        else:
+            allDay = False
 
-            start = dateutil.parser.parse(start_timestamp)
-            end = dateutil.parser.parse(end_timestamp)
+        start = dateutil.parser.parse(start_timestamp)
+        end = dateutil.parser.parse(end_timestamp)
 
-            event = Event(name=title, details='', start=start, end=end, creator=current_student)
-            event.save()
+        event = Event(name=title, details='', start=start, end=end, creator=current_student)
+        event.save()
 
-            for email in assigned_list:
-                student = Student.objects.get(user__username=email)
-                event.assigned_to.add(student)
+        for email in assigned_list:
+            student = Student.objects.get(user__username=email)
+            event.assigned_to.add(student)
 
-            event.save()
+        event.save()
 
-            study_group.event_set.add(event)
-        except:
-            for e in sys.exc_info():
-                print e
+        study_group.event_set.add(event)
 
         #movie_json = {}
         #html = t.render(Context(context))
@@ -69,6 +66,44 @@ def create_event(request, study_group_id=None):
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
+########################
+# Edit event
+########################
+
+@login_required
+def edit_event(request, study_group_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+
+    if request.is_ajax() and request.method == "POST":
+        id = request.POST.get('id')
+        dayDelta = int(request.POST.get('dayDelta'))
+        minuteDelta = int(request.POST.get('minuteDelta'))
+
+        event = Event.objects.get(id=id)
+
+        event.start = event.start + datetime.timedelta(days=dayDelta) \
+                                  + datetime.timedelta(minutes=dayDelta)
+        event.end = event.end + datetime.timedelta(days=dayDelta) \
+                              + datetime.timedelta(minutes=dayDelta)
+
+        event.save()
+
+        #movie_json = {}
+        #html = t.render(Context(context))
+
+        #movie_json['source'] = html
+
+        #results = []
+        #results.append(movie_json)
+
+        #data = json.dumps(results)
+        data = "success"
+    else:
+        data = "fail"
+
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
 @login_required
 def create_event_view(request):
     form = EventForm(data=request.POST or None, user=request.user)
