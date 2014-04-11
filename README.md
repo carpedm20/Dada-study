@@ -19,7 +19,6 @@ Progress
     - join_study_group
     - view_study_group
 2. Board
-
   - models
     - board
     - post
@@ -28,8 +27,8 @@ Progress
     - view_board_list
     - create_post
     - edit_post
-    -delete_post
-    -create_cmment
+    - delete_post
+    - create_cmment
     - view_post
 3. Event
   -models
