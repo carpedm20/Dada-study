@@ -1,0 +1,127 @@
+<script type="text/javascript"> 
+
+$(document).ready(function() {
+  var student_list = [];
+  var email_list = [];
+
+  {% for student in study_group.student_set.all %}
+    student_list.push("{{ student.get_id }}");
+    email_list.push("{{ student }}");
+  {% endfor %}
+
+  var options = "";
+
+  for (var i=0; i<student_list.length; i++) {
+    options += (i+1) + " : " + student_list[i] + "  ";
+  }
+  
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+  
+  var calendar = $('#calendar').fullCalendar({
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+
+    selectable: true,
+    selectHelper: true,
+
+    editable: true,
+
+    select: function(start, end, allDay) {
+      var title = prompt('Event Title:');
+
+      if (title) {
+        var option = prompt(options+':');
+
+        var assigned_list = [];
+        option = option.split(',')
+
+        for (var i=0; i<option.length; i++) {
+          var num = parseInt(option[i]);
+          assigned_list.push(email_list[num]);
+        }
+
+        var start_date = $.fullCalendar.formatDate(start,"yyyy-MM-dd-hh-mm");
+        var end_date = $.fullCalendar.formatDate(end,"yyyy-MM-dd-hh-mm");
+
+        calendar.fullCalendar('renderEvent',
+          {
+            title: title,
+            start: start,
+            end: end,
+            allDay: allDay,
+          },
+          true // make the event "stick"
+        );
+        jQuery.post(
+          '{% url 'create_event' study_group.unique_id %}',
+          {
+            title: title,
+            start: start_date,
+            end: end_date,
+            allDay: allDay,
+            assigned_list: assigned_list.toString(),
+          }
+        );
+      }
+      calendar.fullCalendar('unselect');
+    },
+    /*eventSources: [
+      {
+        url: '{% url 'get_event' study_group.unique_id %}',
+        type: 'POST',
+        data: {
+          student_list: student_list,
+        },
+        success: function(doc) {
+          var events = [];
+          x=events;
+          $(doc).find('event').each(function() {
+          events.push({
+              title: $(this).attr('title'),
+              start: $(this).attr('start') // will be parsed
+            });
+          });
+          //callback(events);
+        },
+        error: function() {
+          //alert('there was an error while fetching events!');
+        },
+        //color: 'yellow',   // a non-ajax option
+        textColor: 'black' // a non-ajax option
+      }
+    ],*/
+    events: function(start, end, callback) {
+      $.ajax({
+        url: '{% url 'get_event' study_group.unique_id %}',
+        dataType: 'json',
+        data: {
+          // our hypothetical feed requires UNIX timestamps
+          //start: Math.round(start.getTime() / 1000),
+          //end: Math.round(end.getTime() / 1000)
+        },
+        success: function(data) {
+          var events = [];
+          $(data).each(function() {
+            alert($(this).attr('student_list'));
+            events.push({
+              title: $(this).attr('title'),
+              start: $(this).attr('start'),
+              end: $(this).attr('end'),
+              allDay: $(this).attr('allDay'),
+            });
+          });
+          callback(events);
+        }
+      });
+    },
+  });
+  
+});
+
+</script>

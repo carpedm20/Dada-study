@@ -4,11 +4,12 @@ from django.contrib import admin
 admin.autodiscover()
 
 from board import views as b_views
+from event import views as e_views
 
 STUDY = r'^s/(?P<study_group_id>\w+)/'
 
 BOARD = STUDY + r'board/'
-EVENT = STUDY + r'evnet/'
+EVENT = STUDY + r'event/'
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,10 +18,10 @@ urlpatterns = patterns('',
 
     url(r'^$', 'core.views.index'),
 
-
     ###############
     # BOARD
     ###############
+
     url(BOARD + r'create/$', b_views.create_board, name='create_board'),
 
     url(BOARD + r'list/$', b_views.list_board, name='list_board'),
@@ -31,7 +32,12 @@ urlpatterns = patterns('',
     url(BOARD + r'(?P<board_id>\d+)/view/(?P<post_id>\d+)$', b_views.view_post, name='view_post'),
 
 
-    url(r'^s/(?P<study_group_id>\w+)/event/', include('event.urls', namespace='event')),
+    ###############
+    # EVENT
+    ###############
+
+    url(EVENT + r'get/$', e_views.get_event_as_json, name='get_event'),
+    url(EVENT + r'create/$', e_views.create_event, name='create_event'),
 
     url(r'^s/', include('core.urls', namespace='core')),
 

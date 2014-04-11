@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, render_to_response, RequestContext, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.utils import simplejson as json
 from django.utils import timezone
 from django import http
+import json
 
 from .models import Event
 from .forms import StudyGroupForm, EventForm

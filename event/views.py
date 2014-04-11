@@ -1,30 +1,73 @@
 from django.shortcuts import render, redirect, render_to_response, RequestContext, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django import http
+from django.http import HttpResponse
+from django.utils import timezone
+import json
 
+import dateutil.parser
+from utils.func import *
 
 from .models import Event
+from core.models import StudyGroup
 
 ########################
 # Event
 ########################
 
 @login_required
-def create_event(request):
-    form = EventForm(data=request.POST or None, user=request.user)
-    context = RequestContext(request)
-    template = 'core/create_event.html'
+def create_event(request, study_group_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
 
-    if request.method == "POST":
-        if form.is_valid():
-            group = form.save(commit=False)
-            group.save()
+    if request.is_ajax() and request.method == "POST":
+        try:
+            title = request.POST.get('title')
+            start_timestamp = request.POST.get('start')
+            end_timestamp = request.POST.get('end')
+            allDay = request.POST.get('allDay')
+            assigned_list = request.POST.get('assigned_list')
 
-            return redirect('/')
-        else:
-            return create_event_view(request)
+            assigned_list = assigned_list.split(',')
 
-    return create_event_view(request)
+            if allDay is 'true':
+                allDay = True
+            else:
+                allDay = False
+
+            start = dateutil.parser.parse(start_timestamp)
+            end = dateutil.parser.parse(end_timestamp)
+
+            event = Event(name=title, details='', start=start, end=end, creator=current_student)
+            event.save()
+
+            for email in assigned_list:
+                student = Student.objects.get(user__username=email)
+                event.assigned_to.add(student)
+
+            event.save()
+
+            study_group.event_set.add(event)
+        except:
+            for e in sys.exc_info():
+                print e
+
+        #movie_json = {}
+        #html = t.render(Context(context))
+
+        #movie_json['source'] = html
+
+        #results = []
+        #results.append(movie_json)
+
+        #data = json.dumps(results)
+        data = "success"
+    else:
+        data = "fail"
+
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
 
 @login_required
 def create_event_view(request):
@@ -45,33 +88,34 @@ def view_calendar(request, study_group_id=None):
     return render(request, template, {})
 
 @login_required
-def get_event_as_json(request): 
-    # Get all events - Not yet completed 
-    events = Event.objects.all()
-
-    # Create the fullcalendar json events list 
+def get_event_as_json(request, study_group_id=None): 
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+    events = study_group.event_set.all()
     event_list = []
 
     for event in events: 
-        # It retrieves dates in the correct time horaire 
         event_start = event.start.astimezone(timezone.get_default_timezone()) 
         event_end = event.end.astimezone(timezone.get_default_timezone())
 
-        # It was decided that if the event starts at midnight is a 
-        # on the event day 
         if event_start.hour == 0 and event_start.minute == 0: 
             Allday = True 
         else: 
             Allday = False
 
-        #if not event.is_cancelled : 
+        student_list = []
+        for student in event.assigned_to.all():
+            student_list.append(student.user.username)
+
+        student_list = ','.join(student_list)
+
         event_list.append ({ 
-                    'id':  event.id , 
-                    'start':  event_start.strftime ( '%Y-%m- %d %H:%M:%S' ), 
-                    'end':  event_end.strftime ( '%Y-%m- %d %H:%M:%S' ), 
-                    'title':  event.name, 
-                    'allDay': True 
-                    })
+            'id':  event.id , 
+            'start':  event_start.strftime ( '%Y-%m- %d %H:%M:%S' ), 
+            'end':  event_end.strftime ( '%Y-%m- %d %H:%M:%S' ), 
+            'title':  event.name, 
+            'allDay': Allday,
+            'student_list': student_list,
+        })
 
     if len(event_list)  ==  0 : 
         raise http.Http404 

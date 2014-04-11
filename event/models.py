@@ -5,7 +5,7 @@ from tag.models import Tag
 
 class Event(models.Model):
     name = models.CharField(max_length=30)
-    details = models.CharField(max_length=50)
+    details = models.CharField(max_length=50, blank=True)
 
     start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
@@ -18,5 +18,5 @@ class Event(models.Model):
     tag_set = models.ManyToManyField(Tag, blank=True, null=True)
 
     def __unicode__(self):
-        #return "[%] %s" % (smart_unicode(self.name), self.details)
-        return smart_unicode(self.name)
+        #return "%s : %s ~ %s" % (self.name, self.start, self.end)
+        return "%s" % (self.name)
