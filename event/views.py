@@ -104,6 +104,37 @@ def edit_event(request, study_group_id=None):
 
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
+
+########################
+# Delete event
+########################
+
+@login_required
+def delete_event(request, study_group_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+
+    if request.is_ajax() and request.method == "POST":
+        id = request.POST.get('id')
+        dayDelta = int(request.POST.get('dayDelta'))
+        minuteDelta = int(request.POST.get('minuteDelta'))
+
+        event = Event.objects.get(id=id)
+
+        event.start = event.start + datetime.timedelta(days=dayDelta) \
+                                  + datetime.timedelta(minutes=dayDelta)
+        event.end = event.end + datetime.timedelta(days=dayDelta) \
+                              + datetime.timedelta(minutes=dayDelta)
+
+        event.save()
+
+        data = "success"
+    else:
+        data = "fail"
+
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
 @login_required
 def create_event_view(request):
     form = EventForm(data=request.POST or None, user=request.user)

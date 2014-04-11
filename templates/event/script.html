@@ -102,6 +102,26 @@ $(document).ready(function() {
         textColor: 'black' // a non-ajax option
       }
     ],*/
+    eventClick: function(calEvent, jsEvent, view) {
+      var title = calEvent.title.split('-')[0].trim();
+      var isDelete = confirm('Are you sure to delete "' + title + '"');
+      
+      if (isDelete) {
+        jQuery.post(
+          '{% url 'delete_event' study_group_id=study_group.unique_id %}',
+          {
+            id: event.id,
+            dayDelta: dayDelta,
+            minuteDelta: minuteDelta,
+          }
+        );
+      }
+      //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+      //alert('View: ' + view.name);
+
+      // change the border color just for fun
+      $(this).css('border-color', 'red');
+    },
     eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc) {
       if (!confirm("Are you sure about this change?")) {
         revertFunc();
