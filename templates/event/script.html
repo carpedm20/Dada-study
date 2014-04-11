@@ -41,17 +41,23 @@ $(document).ready(function() {
         var assigned_list = [];
         option = option.split(',')
 
+        var assigned_list_as_string = "";
+
         for (var i=0; i<option.length; i++) {
-          var num = parseInt(option[i]);
+          var num = parseInt(option[i] - 1);
           assigned_list.push(email_list[num]);
+          assigned_list_as_string += student_list[num] + " ,";
         }
+
+        if (option.length > 0)
+          assigned_list_as_string = assigned_list_as_string.substr(0, assigned_list_as_string.length - 2);
 
         var start_date = $.fullCalendar.formatDate(start,"yyyy-MM-dd-hh-mm");
         var end_date = $.fullCalendar.formatDate(end,"yyyy-MM-dd-hh-mm");
 
         calendar.fullCalendar('renderEvent',
           {
-            title: title,
+            title: title + " - " + assigned_list_as_string,
             start: start,
             end: end,
             allDay: allDay,
@@ -108,12 +114,26 @@ $(document).ready(function() {
         success: function(data) {
           var events = [];
           $(data).each(function() {
-            alert($(this).attr('student_list'));
+            var student_list = $(this).attr('student_list');
+            student_list = student_list.split(',')
+
+            var student_list_as_string = '';
+
+            for(var i=0; i<student_list.length; i++) {
+              student_list[i] = student_list[i].split('@')[0];
+              student_list_as_string += student_list[i] + ", ";
+            }
+
+            if (student_list.length > 0)
+              student_list_as_string = student_list_as_string.substr(0, student_list_as_string.length - 2);
+
             events.push({
-              title: $(this).attr('title'),
+              // title: $(this).attr('title') + "\r\n" + student_list,
+              title: $(this).attr('title') + " - " + student_list_as_string,
               start: $(this).attr('start'),
               end: $(this).attr('end'),
               allDay: $(this).attr('allDay'),
+              //student_list: $(this).attr('student_list'),
             });
           });
           callback(events);

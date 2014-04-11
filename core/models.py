@@ -33,7 +33,14 @@ class StudyGroup(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.unique_id:
-            self.unique_id = base64.b64encode(str(uuid.uuid4()))[:10]
+            while True:
+                unique_id = base64.b64encode(str(uuid.uuid4()))[:10]
+                group = StudyGroup.objects.filter(unique_id=unique_id)
+
+                if len(group) is 0:
+                    self.unique_id = unique_id
+                    break
+            
         super(StudyGroup, self).save(*args, **kwargs)
 
     def __unicode__(self):
