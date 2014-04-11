@@ -12,9 +12,8 @@ Progress
 
 1. Core
 
-  - model
-    - 123
-    - 123
+  - models
+    - study_group
   - views
     - view_calendar
     - create_study_group
@@ -22,6 +21,10 @@ Progress
     - view_study_group
 
 2. Board
+
+  - models
+    - board
+    - post
   - views
     - create_board
     - view_board_list
@@ -32,6 +35,9 @@ Progress
     - view_post
 
 3. Event
+
+  -models
+    - event
   -views
     - get_event_as_json
     - edit_event
