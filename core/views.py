@@ -68,7 +68,7 @@ def view_calendar(request, study_group_id=None):
     return render(request, template, {})
 
 ########################
-# View study group
+# Join study group
 ########################
 
 @login_required
@@ -93,7 +93,7 @@ def join_study_group(request):
 @login_required
 def view_study_group(request, study_group_id=None):
     study_group = StudyGroup.objects.get(unique_id=study_group_id)
-    template = 'core/view_study_group.html'
+    template = 'core/view_calendar.html'
 
     return render(request, template, {'study_group': study_group,  })
 

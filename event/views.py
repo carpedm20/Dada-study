@@ -14,6 +14,19 @@ from .models import Event
 from core.models import StudyGroup
 
 ########################
+# Calendar
+########################
+
+@login_required
+def view_calendar(request, study_group_id=None):
+    print "================================"
+    #form = EventForm(data=request.POST or None, user=request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+    template = 'core/view_calendar.html'
+
+    return render(request, template, {'study_group': study_group, })
+
+########################
 # Event
 ########################
 
@@ -66,6 +79,13 @@ def create_event(request, study_group_id=None):
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
+@login_required
+def create_event_view(request):
+    form = EventForm(data=request.POST or None, user=request.user)
+    template = 'core/create_event.html'
+
+    return render(request, template, {'form': form,  })
+
 ########################
 # Edit event
 ########################
@@ -89,15 +109,36 @@ def edit_event(request, study_group_id=None):
 
         event.save()
 
-        #movie_json = {}
-        #html = t.render(Context(context))
+        data = "success"
+    else:
+        data = "fail"
 
-        #movie_json['source'] = html
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
 
-        #results = []
-        #results.append(movie_json)
+########################
+# Complete event
+########################
 
-        #data = json.dumps(results)
+@login_required
+def complete_event(request, study_group_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+
+    if request.is_ajax() and request.method == "POST":
+        id = request.POST.get('id')
+        dayDelta = int(request.POST.get('dayDelta'))
+        minuteDelta = int(request.POST.get('minuteDelta'))
+
+        event = Event.objects.get(id=id)
+
+        event.start = event.start + datetime.timedelta(days=dayDelta) \
+                                  + datetime.timedelta(minutes=dayDelta)
+        event.end = event.end + datetime.timedelta(days=dayDelta) \
+                              + datetime.timedelta(minutes=dayDelta)
+
+        event.save()
+
         data = "success"
     else:
         data = "fail"
@@ -126,13 +167,6 @@ def delete_event(request, study_group_id=None):
 
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
-
-@login_required
-def create_event_view(request):
-    form = EventForm(data=request.POST or None, user=request.user)
-    template = 'core/create_event.html'
-
-    return render(request, template, {'form': form,  })
 
 ########################
 # Calendar

@@ -70,7 +70,7 @@ $(document).ready(function() {
           true // make the event "stick"
         );
         jQuery.post(
-          '{% url 'create_event' study_group.unique_id %}',
+          '{% url 'create_event' study_group_id=study_group.unique_id %}',
           {
             title: title,
             start: start_date,

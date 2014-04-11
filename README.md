@@ -28,7 +28,7 @@ Progress
     - create_post
     - edit_post
     - delete_post
-    - create_cmment
+    - create_comment
     - view_post
 3. Event
   - models
@@ -59,13 +59,13 @@ Progress
     - file
   -views
 
-Todo
+To-do
 ----
 
 - Tag : filter_tag, add_tag, delete_tag
 - School : school_index, school_study_group
 - Event : event_complete, event_decomplete
-- Board : file_upload, file_delete, file_info
+- Board : file_upload, file_delete, file_info, edit_comment
 
 
 Copyright

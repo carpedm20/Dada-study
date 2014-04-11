@@ -15,6 +15,7 @@ class Event(models.Model):
 
     creator = models.ForeignKey(Student, related_name='event_creator')
     assigned_to = models.ManyToManyField(Student, related_name='assigned_to')
+    finished_student = models.ManyToManyField(Student, related_name='finished_student')
 
     study_group = models.ForeignKey(StudyGroup, null=True)
     tag_set = models.ManyToManyField(Tag, blank=True, null=True)

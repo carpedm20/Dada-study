@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     # EVENT
     ###############
 
-    url(EVENT + r'view/$', c_views.view_study_group, name='view_calendar'),
+    url(EVENT + r'view/$', e_views.view_calendar, name='view_calendar'),
 
     url(EVENT + r'get/$', e_views.get_event_as_json, name='get_event'),
     #url(EVENT + r'view/$', e_views.view_calendar, name='view_calendar'),
