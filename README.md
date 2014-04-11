@@ -11,7 +11,6 @@ Progress
 --------
 
 1. Core
-
   - models
     - study_group
   - views
@@ -19,7 +18,6 @@ Progress
     - create_study_group
     - join_study_group
     - view_study_group
-
 2. Board
 
   - models
@@ -33,9 +31,7 @@ Progress
     -delete_post
     -create_cmment
     - view_post
-
 3. Event
-
   -models
     - event
   -views
@@ -43,6 +39,22 @@ Progress
     - edit_event
     - delete_event
     - create_event
+4. School
+  -models
+    -school
+  -views
+5. Account
+  - models
+    - student
+  - views
+    - sign_in
+    - sign_up
+    - sign_out
+    - follow
+6. Tag
+  - models
+    - tag
+  - views
 
 
 Copyright
