@@ -16,6 +16,7 @@ Progress
   - views
     - view_calendar
     - create_study_group
+    - delete_study_group
     - join_study_group
     - view_study_group
 2. Board
@@ -29,6 +30,7 @@ Progress
     - edit_post
     - delete_post
     - create_comment
+    - delete_comment
     - view_post
 3. Event
   - models
