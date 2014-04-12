@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/edit/$', b_views.edit_post, name='edit_post'),
     url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/delete/$', b_views.delete_post, name='delete_post'),
     url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/comment/$', b_views.create_comment, name='create_comment'),
+    url(BOARD + r'(?P<board_id>\d+)/(?P<post_id>\d+)/comment/(?P<comment_id>\d+)/delete/$', b_views.delete_comment, name='delete_comment'),
 
     url(BOARD + r'(?P<board_id>\d+)/view/(?P<post_id>\d+)$', b_views.view_post, name='view_post'),
 

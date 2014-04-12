@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 from .forms import BoardForm, PostForm, CommentForm
-from .models import Post
+from .models import Post, Comment
 from core.models import StudyGroup
 
 import sys
@@ -26,7 +26,7 @@ def list_board(request):
             board = form.save(commit=False)
             board.save()
 
-            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'unique_id':study_group_id,}))
+            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'study_group_id':study_group_id,}))
         else:
             return create_board_view(request)
 
@@ -56,7 +56,7 @@ def view_post(request, study_group_id, post_id, board_id=None):
     except:
         for e in sys.exc_info():
             print e
-        return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'unique_id':study_group_id,}))
+        return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'study_group_id':study_group_id,}))
 
 
 ########################
@@ -80,16 +80,11 @@ def create_comment(request, study_group_id, post_id, board_id=None):
 ########################
 
 @login_required
-def delete_comment(request, study_group_id, comment_id=None):
-    instance = Commet.objects.get(id=comment_id)
-    context = RequestContext(request)
+def delete_comment(request, study_group_id=None, board_id=None, comment_id=None, post_id=None):
+    comment = Comment.objects.get(id=comment_id)
+    comment.delete()
 
-    if request.method == "POST":
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.save()
-
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(reverse('view_post', kwargs={'study_group_id':study_group_id, 'board_id':board_id, 'post_id': post_id, }))
 
 
 ########################
@@ -110,7 +105,7 @@ def create_board(request, study_group_id):
             board = form.save(commit=False)
             board.save()
 
-            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'unique_id':study_group_id,}))
+            return HttpResponseRedirect(reverse('core:view_study_group', kwargs={'study_group_id':study_group_id,}))
         else:
             return create_board_view(request, study_group)
 

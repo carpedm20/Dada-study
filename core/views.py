@@ -118,6 +118,17 @@ def create_study_group(request):
 
     return create_study_group_view(request)
 
+########################
+# Delete Study Group
+########################
+
+@login_required
+def delete_study_group(request, study_group_id=None):
+    group = StudyGroup.objects.get(unique_id=study_group_id)
+    group.delete()
+
+    return redirect('/')
+
 @login_required
 def create_study_group_view(request):
     form = StudyGroupForm(data=request.POST or None, user=request.user)

@@ -1,12 +1,17 @@
        <div class="col-sm-3 col-sm-offset-3 col-md-2 col-md-offset-2 sidebar inner-sidebar">
             <ul class="nav nav-list">
-                <li class="nav-header text-center"><h4>{{ study_group.name }}</h4></li>
+                <li class="nav-header text-center">
+                  <h3><a href="{% url 'core:view_study_group' study_group.unique_id %}">{{ study_group.name }}</a></h3>
+                </li>
                 <!--<li class="nav-header"><a href="#">Users</a></li>-->
                 {% for student in study_group.student_set.all %}
                   {% ifnotequal student.assigned_to.all|length 0 %}
                   <li class="dropdown">
                     <a class="dropdown-toggle sub_nav_gravatar" href="#" data-toggle="dropdown"><img src="{{ student.gravatar_small_url }}" />
                       {{ student.get_id }}
+                      {% if student in study_group.leader.all %}
+                        <span class="glyphicon glyphicon-tower"></span>
+                      {% endif %}
                       <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -22,26 +27,34 @@
                   {% else %}
                   <li>
                     <a class="sub_nav_gravatar" href="#" data-toggle="dropdown"><img src="{{ student.gravatar_small_url }}" /> {{ student.get_id }}
+                    {% if student in study_group.leader.all %}
+                      <span class="glyphicon glyphicon-tower"></span>
+                    {% endif %}
                     </a>
                   </li>
                   {% endifnotequal %}
                 {% endfor %}
                 <li class="nav-header"><a href="{% url 'core:view_study_group' study_group_id=study_group.unique_id %}"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
-            {% for board in study_group.board_set.all %}
-              <!--<li class="dropdown">-->
-                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ board }}<b class="caret"></b></a>-->
-                <li class="nav-header">{{ board }}</li>
-                <!--<ul class="dropdown-menu">-->
-                  {% for post in board.post_set.all %}
-                    <li><a href="{% url 'view_post' study_group_id=study_group.unique_id post_id=post.id board_id=board.id %}">{{ post.name }}</a></li>
-                  {% endfor %}
-                  <li><a href="{% url 'create_post' study_group.unique_id board.id %}"><span class="glyphicon glyphicon-plus"></span> Add post</a></li>
-                <!--</ul>-->
-              <!--</li>-->
-            {% endfor %}
+              {% for board in study_group.board_set.all %}
+                <!--<li class="dropdown">-->
+                  <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ board }}<b class="caret"></b></a>-->
+                  <li class="nav-header">{{ board }}</li>
+                  <!--<ul class="dropdown-menu">-->
+                    {% for post in board.post_set.all %}
+                      <li><a href="{% url 'view_post' study_group_id=study_group.unique_id post_id=post.id board_id=board.id %}">{{ post.name }}</a></li>
+                    {% endfor %}
+                    <li><a href="{% url 'create_post' study_group.unique_id board.id %}"><span class="glyphicon glyphicon-plus"></span> Add post</a></li>
+                  <!--</ul>-->
+                <!--</li>-->
+              {% endfor %}
               <li>
                 <button class="btn btn-sm btn-info btn-block" onclick="location.href='{% url 'create_board' study_group_id=study_group.unique_id %}'">Add Board</button>
               </li>
+              {% if user.student in study_group.leader.all %}
+                <li>
+                  <button class="btn btn-sm btn-warning btn-block delete-study-group-btn" onclick="location.href='{% url 'core:delete_study_group' study_group_id=study_group.unique_id %}'">Delete study group</button>
+                </li>
+              {% endif %}
             </ul>
 
           <!--Drop down version
