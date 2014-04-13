@@ -35,6 +35,17 @@ def index(request, auth_form=None, user_form=None):
         study_group_list = StudyGroup.objects.all()
         student_list = Student.objects.all()
 
+        total_event_count = 0.0
+        finished_event_count = 0.0
+
+        for event in current_student.assigned_to.all():
+            total_event_count += 1
+
+            if current_student in event.finished_student.all():
+                finished_event_count += 1
+
+        event_finished_percent = finished_event_count / total_event_count * 100.0
+
         for group in study_group_list:
             if group in current_student.studygroup_set.all():
                 group.isJoined = True
@@ -51,6 +62,9 @@ def index(request, auth_form=None, user_form=None):
                       'core/home.html',
                       {'auth_form': auth_form,
                        'user_form': user_form,
+                       'total_event_count': total_event_count,
+                       'finished_event_count': finished_event_count,
+                       'event_finished_percent' : event_finished_percent,
                        'student_list': student_list,
                        'study_group_list' : study_group_list})
 
@@ -65,7 +79,7 @@ def view_calendar(request, study_group_id=None):
     #form = EventForm(data=request.POST or None, user=request.user)
     template = 'core/view_calendar.html'
 
-    return render(request, template, {})
+    return render(request, template, {'total_calendar': True})
 
 ########################
 # Join study group

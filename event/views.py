@@ -167,7 +167,7 @@ def unfinish_event(request, study_group_id=None, event_id=None):
 @login_required
 def edit_event(request, study_group_id=None):
     current_student = get_student_from_user(request.user)
-    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+    #study_group = StudyGroup.objects.get(unique_id=study_group_id)
 
     if request.is_ajax() and request.method == "POST":
         id = request.POST.get('id')
@@ -227,7 +227,7 @@ def complete_event(request, study_group_id=None):
 @login_required
 def delete_event(request, study_group_id=None):
     current_student = get_student_from_user(request.user)
-    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+    #study_group = StudyGroup.objects.get(unique_id=study_group_id)
 
     if request.is_ajax() and request.method == "POST":
         id = request.POST.get('id')
@@ -255,8 +255,13 @@ def view_calendar(request, study_group_id=None):
 
 @login_required
 def get_event_as_json(request, study_group_id=None): 
-    study_group = StudyGroup.objects.get(unique_id=study_group_id)
-    events = study_group.event_set.all()
+    if study_group_id == '0':
+        current_student = get_student_from_user(request.user)
+        events = current_student.assigned_to.all()
+    else:
+        study_group = StudyGroup.objects.get(unique_id=study_group_id)
+        events = study_group.event_set.all()
+
     event_list = []
 
     for event in events: 

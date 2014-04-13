@@ -72,9 +72,20 @@
               <li>
                 <button class="btn btn-sm btn-info btn-block" onclick="location.href='{% url 'create_board' study_group_id=study_group.unique_id %}'">Add Board</button>
               </li>
+              <li>
+                <form role="form" action="{% url 'core:join_study_group' %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" value="{{ study_group.unique_id }}" name="group_unique_id">
+                  {% if user.student not in study_group.student_set.all %}
+                    <button class="btn btn-sm btn-primary btn-block delete-study-group-btn">Join study group</button>
+                  {% else %}
+                    <button class="btn btn-sm btn-warning btn-block delete-study-group-btn">Leave study group</button>
+                  {% endif %}
+                </form>
+              </li>
               {% if user.student in study_group.leader.all %}
                 <li>
-                  <button class="btn btn-sm btn-warning btn-block delete-study-group-btn" onclick="confirm_delete_study_group()">Delete study group</button>
+                  <button class="btn btn-sm btn-danger btn-block delete-study-group-btn" onclick="confirm_delete_study_group()">Delete study group</button>
                 </li>
               {% endif %}
             </ul>
