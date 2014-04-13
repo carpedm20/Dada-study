@@ -40,41 +40,55 @@
             {{ post.content | safe }}
           </div>
 
-          <br />
-
-          <h3>Comments </h3>
-
-          {% for comment in post.comment_set.all %}
-          <div class="well">
-            {% if comment.creator.user == user %}
-              <div class="pull-right">
-                <button type="button" class="btn btn-warning btn-sm" onclick="confirm_delete_comment({{ comment.id }})"/>Delete</button>
-              </div>
-              <div class="pull-right">
-                <button type="button" class="btn btn-info btn-sm comment-edit-btn"/>Edit</button>
-              </div>
-            {% endif %}
-            <div class="pull-left">
-              <img class="img-responsive img-thumbnail comment-thumbnail" src="{{ comment.creator.gravatar_middle_url }}">
+          <div class="well" style="margin-top:20px;">
+            <div class="list-group">
+              <a href="#" class="list-group-item active">Uploaded file</a>
+              {% for file in post.file_set.all %}
+                <a href="{{ file.file_field.url }}" class="list-group-item">{{ file }}</a>
+              {% endfor %}
             </div>
-            <div class="comment-content">
-              <div class="comment-author">
-                <span class="name"><a href=#" rel="external nofollow" class="url">{{ comment.creator }}</a></span>
-                <small>{{ comment.created_at }}</small>
-              </div>
 
-              <div class="comment-text">
-                {{ comment.content | safe }}
-              </div>
+            <div class="well">
+              {% load jfutags %}
+              {% jfu 'file/upload.html' study_group_id=study_group.unique_id post_id=post.id %}
             </div>
           </div>
-          {% endfor %}
 
-          <form class="form-comment" role="form" action="{% url 'create_comment' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}" method="post"> {% csrf_token %}
-            {{ form.as_p }}
-            <input type="hidden" value="{{ next_url }}" name="next_url">
-            <button class="btn btn-sm btn-success btn-block" type="submit">Write comment</button>
-          </form>
+          <div class="container">
+            <h3>Comments </h3>
+
+            {% for comment in post.comment_set.all %}
+            <div class="well">
+              {% if comment.creator.user == user %}
+                <div class="pull-right">
+                  <button type="button" class="btn btn-warning btn-sm" onclick="confirm_delete_comment({{ comment.id }})"/>Delete</button>
+                </div>
+                <div class="pull-right">
+                  <button type="button" class="btn btn-info btn-sm comment-edit-btn"/>Edit</button>
+                </div>
+              {% endif %}
+              <div class="pull-left">
+                <img class="img-responsive img-thumbnail comment-thumbnail" src="{{ comment.creator.gravatar_middle_url }}">
+              </div>
+              <div class="comment-content">
+                <div class="comment-author">
+                  <span class="name"><a href=#" rel="external nofollow" class="url">{{ comment.creator }}</a></span>
+                  <small>{{ comment.created_at }}</small>
+                </div>
+
+                <div class="comment-text">
+                  {{ comment.content | safe }}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            <form class="form-comment" role="form" action="{% url 'create_comment' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}" method="post"> {% csrf_token %}
+              {{ form.as_p }}
+              <input type="hidden" value="{{ next_url }}" name="next_url">
+              <button class="btn btn-sm btn-success btn-block" type="submit">Write comment</button>
+            </form>
+          </div>
 
         </div>
       </div>

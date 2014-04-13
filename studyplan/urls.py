@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 
 from django.contrib import admin
 admin.autodiscover()
@@ -21,13 +22,16 @@ urlpatterns = patterns('',
 
     url(r'^$', 'core.views.index'),
 
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.MEDIA_ROOT}),
+    #(r'^asset/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.ASSET_ROOT}),
+
     
     ###############
     # jfu
     ###############
 
-    url(FILE + r'upload/', f_views.upload, name = 'jfu_upload' ),
-    url(FILE + r'delete/(?P<pk>\d+)$', f_views.upload_delete, name = 'jfu_delete' ),
+    url(FILE + r'(?P<post_id>\d+)/upload/', f_views.upload, name = 'jfu_upload' ),
+    url(FILE + r'(?P<post_id>\d+)/delete/(?P<pk>\d+)$', f_views.upload_delete, name = 'jfu_delete' ),
 
     ###############
     # BOARD
