@@ -1,1 +1,1 @@
-web: gunicorn gyutae.wsgi
+web: python manage.py runserver 0:$PORT
