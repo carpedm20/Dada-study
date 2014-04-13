@@ -108,7 +108,7 @@ class PostForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     #content = forms.CharField(widget=SummernoteWidget())
-    content = forms.CharField(widget=forms.Textarea(attrs={'width': '100%', 'cols': 100, 'rows': 5}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'width': '100%', 'cols': 80, 'rows': 5}))
     
     class Meta:
         model = Post
