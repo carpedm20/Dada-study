@@ -84,7 +84,11 @@ def delete_comment(request, study_group_id=None, board_id=None, comment_id=None,
     comment = Comment.objects.get(id=comment_id)
     comment.delete()
 
-    return HttpResponseRedirect(reverse('view_post', kwargs={'study_group_id':study_group_id, 'board_id':board_id, 'post_id': post_id, }))
+    if study_group_id == '0':
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+    else:
+        return HttpResponseRedirect(reverse('view_post', kwargs={'study_group_id':study_group_id, 'board_id':board_id, 'post_id': post_id, }))
 
 
 ########################

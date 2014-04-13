@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}GyuTae{% endblock %}
+{% block title %}겨태{% endblock %}
 
 {% block jumbotron %}
 
 <div class="jumbotron">
   <div class="container">
     <div class="col-sm-7">
-      <h1>Build software better, together.</h1>
-      <p>Powerful collaboration, code review, and code management for open source and private projects. Need private repositories? <a href='/plans'>Upgraded plans start at $7/mo.</a></p>
+      <h1 style="font-family: 'Hanna', serif; ">당신의 스터디,<br/> 안녕하신가요?</h1>
+      <p>지속 가능한 스터디 문화를 위한 <b>겨태</b> 프로젝트</p>
+      <p>
+        <div class="fb-like" data-href="http://gyutae.herokuapp.com/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+      </p>
     </div>
     <div class="col-sm-5">
       <form role="form-horizontal" action="/account/sign_up/" method="post">{% csrf_token %}
@@ -24,7 +27,7 @@
 {% block below_jumbotron %}
 
 <div class="row text-center">
-  <h1>Why you’ll love GitHub.</h1>
+  <h1>Why you’ll love 겨태</h1>
   <p>Powerful features to make software development more collaborative.</p>
 </div>
 

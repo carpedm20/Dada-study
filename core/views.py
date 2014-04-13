@@ -9,6 +9,8 @@ from .forms import StudyGroupForm, EventForm
 from account.forms import StudentCreateForm
 from account.models import Student
 from core.models import StudyGroup
+from board.models import Post
+from board.forms import CommentForm
 
 from utils.func import *
 
@@ -83,6 +85,20 @@ def view_calendar(request, study_group_id=None):
     template = 'core/view_calendar.html'
 
     return render(request, template, {'total_calendar': True})
+
+########################
+# View help
+########################
+
+@login_required
+def view_help(request):
+    #form = EventForm(data=request.POST or None, user=request.user)
+    template = 'core/help.html'
+
+    post = Post.objects.get(id=1)
+    form = CommentForm(data=request.POST or None, user=request.user, post_id=1)
+
+    return render(request, template, {'post': post, 'form': form})
 
 ########################
 # Join study group

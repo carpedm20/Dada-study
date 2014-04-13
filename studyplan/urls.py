@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(FILE + r'(?P<post_id>\d+)/upload/', f_views.upload, name = 'jfu_upload' ),
     url(FILE + r'(?P<post_id>\d+)/delete/(?P<pk>\d+)$', f_views.upload_delete, name = 'jfu_delete' ),
 
+
     ###############
     # BOARD
     ###############
