@@ -44,12 +44,17 @@ def view_post(request, study_group_id, post_id, board_id=None):
     template = 'board/view_post.html'
 
     study_group = StudyGroup.objects.get(unique_id=study_group_id)
+    current_student = get_student_from_user(request.user)
 
     try:
         post = Post.objects.get(id=post_id)
 
         for comment in post.comment_set.all():
             comment.content = comment.content.replace('\r\n','<br />')
+
+        if current_student in study_group.student_set.all():
+            if current_student not in post.viewed_student.all():
+                post.viewed_student.add(current_student)
 
         return render(request, template, {'form': form, 'study_group': study_group,'post': post, 'board_id': post.board.id, 'user': request.user})
 

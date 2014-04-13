@@ -24,6 +24,8 @@ class Post(models.Model):
     creator = models.ForeignKey(Student)
     created_at  = models.DateTimeField(auto_now_add=True)
 
+    viewed_student = models.ManyToManyField(Student, blank=True, null=True, related_name='viewed_student')
+
     def __unicode__(self):
         return self.name
 

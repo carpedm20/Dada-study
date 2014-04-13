@@ -34,6 +34,12 @@
 
           <h2>{{ post }}</h2>
           <p>작성자 : <a href="#">{{ post.creator }}</a> | {{ post.created_at }}</p>
+          <p>본 사람 : 
+
+          {% for student in post.viewed_student.all %}
+            <span class="badge">{{ student.get_id }}</span>, 
+          {% endfor %}
+          </p>
 
           <div class="well">
             <h4>Content</h4>
@@ -48,6 +54,7 @@
               </li>
               {% for file in post.file_set.all %}
               <li class="list-group-item">
+                <span class="badge">{{ file.uploader.get_id }}</span>
                 <a href="{{ file.file_field.url }}">{{ file }}</a>
               </li>
               {% endfor %}

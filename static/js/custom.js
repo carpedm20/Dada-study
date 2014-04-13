@@ -1,3 +1,4 @@
+
 /*
  * CSRF jqeury error solution
  * http://stackoverflow.com/a/5107878

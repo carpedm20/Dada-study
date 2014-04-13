@@ -4,9 +4,30 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 from jfu.http import upload_receive, UploadResponse, JFUResponse
+from django.shortcuts import render
 
 from .models import File
 from board.models import Post
+from core.models import StudyGroup
+
+from utils.func import *
+
+
+def view_file_list(request, study_group_id=None):
+    template = 'file/view_file_list.html'
+
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+    file_list = []
+
+    """
+    for board in study_group.board_set.all():
+        for post in board.post_set.all():
+            for f in post.file_set.all():
+                file_list.append(f)
+    """
+
+    return render(request, template, {'study_group': study_group})#'file_list': file_list})
+    
 
 @require_POST
 def upload(request, study_group_id=None, post_id=None):
@@ -17,6 +38,7 @@ def upload(request, study_group_id=None, post_id=None):
 
     post = Post.objects.get(id=post_id)
     instance.post = post
+    instance.uploader = get_student_from_user(request.user)
     instance.save()
 
     basename = os.path.basename(instance.file_field.path)

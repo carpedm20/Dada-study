@@ -93,7 +93,7 @@ def view_calendar(request, study_group_id=None):
 @login_required
 def view_help(request):
     #form = EventForm(data=request.POST or None, user=request.user)
-    template = 'core/help.html'
+    template = 'core/view_help.html'
 
     post = Post.objects.get(id=1)
     form = CommentForm(data=request.POST or None, user=request.user, post_id=1)
