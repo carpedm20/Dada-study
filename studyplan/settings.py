@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'school',
     'tag',
     'event',
+    'file',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,11 +90,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+LOGIN_URL = '/account/sign_in/'
+LOGOUT_URL = '/account/sign_out/'
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+)
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
-    os.path.join(BASE_DIR, 'articles/templates'),
+    os.path.join(BASE_DIR, 'multiuploader/templates'),
 )
 
 if DEBUG:

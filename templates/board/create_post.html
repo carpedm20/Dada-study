@@ -19,6 +19,9 @@
           {% else %}
             <form class="form-horizontal" role="form" action="{% url 'create_post' study_group_id=study_group.unique_id board_id=board_id %}" method="post"> {% csrf_token %}
               {{ form.as_p }}
+              <div class="well">
+  {% include 'file/upload.html' %}
+              </div>
               <input type="hidden" value="{{ next_url }}" name="next_url">
               <button class="btn btn-lg btn-success btn-block" type="submit">Create post</button>
           {% endif %}
@@ -26,5 +29,6 @@
         </div>
       </div>
     </div>
+
 
 {% endblock %}

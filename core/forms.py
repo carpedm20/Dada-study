@@ -15,7 +15,7 @@ class StudyGroupForm(forms.ModelForm):
     student_set = forms.ModelMultipleChoiceField(queryset=Student.objects.all())
     tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
 
-    is_private = forms.BooleanField(label="Private group")
+    is_private = forms.BooleanField(label="Private group", required=False)
  
     class Meta:
         model = StudyGroup

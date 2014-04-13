@@ -13,6 +13,33 @@
           <div class="list-group">
             <div class="list-group-item active">
               <h4 class="list-group-item-heading">
+                To-do
+              </h4>
+            </div>
+            {% for event in user.student.assigned_to.all %}
+              <div class="list-group-item">
+                {% if user.student in event.finished_student.all %}
+                  <button type="button" class="btn btn-success btn-lg pull-right" onclick="location.href='{% url 'unfinish_event' study_group_id=event.study_group.unique_id event_id=event.id %}'">
+                    <span class="glyphicon glyphicon-ok"></span> Done
+                  </button>
+                {% else %}
+                  <button type="button" class="btn btn-info btn-lg pull-right" onclick="location.href='{% url 'finish_event' study_group_id=event.study_group.unique_id event_id=event.id %}'">
+                    Finished?
+                  </button>
+                {% endif %}
+                <h4 class="list-group-item-heading">
+                  <a href="#"> {{ event.name }} </a>
+                </h4>
+                <p class="list-group-item-text">
+                  {{ event.start }} ~ {{ event.end }} |
+                  <a href="{% url 'core:view_study_group' event.study_group.unique_id %}">{{ event.study_group }}</a>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="list-group">
+            <div class="list-group-item active">
+              <h4 class="list-group-item-heading">
                 Study Group list
               </h4>
             </div>
@@ -73,10 +100,10 @@
                   <input type="hidden" value="{{ student }}" name="username">
                     {% if student.isFriend %}
                   <button type="submit" class="student-follow-btn btn btn-success btn-lg pull-right">
-                      Friend
+                      <span class="glyphicon glyphicon-star"></span> Friend
                     {% else %}
                   <button type="submit" class="student-follow-btn btn btn-primary btn-lg pull-right">
-                      Follow
+                      <span class="glyphicon glyphicon-star-empty"></span> Follow
                     {% endif %}
                   </button>
                 </form>

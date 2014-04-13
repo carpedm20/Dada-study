@@ -1,7 +1,15 @@
+<script type="text/javascript">
+    function confirm_delete_study_group() {
+      var conf= confirm('Are you sure to delete this study group');
+      if (conf) {
+        location.href='{% url 'core:delete_study_group' study_group_id=study_group.unique_id %}';
+      }
+    }
+</script>
        <div class="col-sm-3 col-sm-offset-3 col-md-2 col-md-offset-2 sidebar inner-sidebar">
             <ul class="nav nav-list">
                 <li class="nav-header text-center">
-                  <h3><a href="{% url 'core:view_study_group' study_group.unique_id %}">{{ study_group.name }}</a></h3>
+                  <h4><a href="{% url 'core:view_study_group' study_group.unique_id %}">{{ study_group.name }}</a></h4>
                 </li>
                 <!--<li class="nav-header"><a href="#">Users</a></li>-->
                 {% for student in study_group.student_set.all %}
@@ -16,10 +24,24 @@
                     </a>
                     <ul class="dropdown-menu">
                       {% for event in student.assigned_to.all %}
-                        {% if event.study_group == study_group %}
-                          <li>
-                            <a href="#">{{ event }}</a>
-                          </li>
+                        {% if event in study_group.event_set.all %}
+                          {% if event.study_group == study_group %}
+                            <li>
+                              {% if student in event.finished_student.all %}
+                                {% if student == user.student %}
+                                  <a href="{% url 'unfinish_event' study_group_id=study_group.unique_id event_id=event.id %}"><span class="glyphicon glyphicon-ok"></span> {{ event }}</a>
+                                {% else %}
+                                  <a href="#"><span class="glyphicon glyphicon-ok"></span> {{ event }}</a>
+                                {% endif %}
+                              {% else %}
+                                {% if student == user.student %}
+                                  <a href="{% url 'finish_event' study_group_id=study_group.unique_id event_id=event.id %}"><span class=""></span> {{ event }}</a>
+                                {% else %}
+                                  <a href="#"><span class=""></span> {{ event }}</a>
+                                {% endif %}
+                              {% endif %}
+                            </li>
+                          {% endif %}
                         {% endif %}
                       {% endfor %}
                     </ul>
@@ -52,7 +74,7 @@
               </li>
               {% if user.student in study_group.leader.all %}
                 <li>
-                  <button class="btn btn-sm btn-warning btn-block delete-study-group-btn" onclick="location.href='{% url 'core:delete_study_group' study_group_id=study_group.unique_id %}'">Delete study group</button>
+                  <button class="btn btn-sm btn-warning btn-block delete-study-group-btn" onclick="confirm_delete_study_group()">Delete study group</button>
                 </li>
               {% endif %}
             </ul>

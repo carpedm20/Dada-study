@@ -19,7 +19,6 @@ from core.models import StudyGroup
 
 @login_required
 def view_calendar(request, study_group_id=None):
-    print "================================"
     #form = EventForm(data=request.POST or None, user=request.user)
     study_group = StudyGroup.objects.get(unique_id=study_group_id)
     template = 'core/view_calendar.html'
@@ -85,6 +84,81 @@ def create_event_view(request):
     template = 'core/create_event.html'
 
     return render(request, template, {'form': form,  })
+
+########################
+# Finish event
+########################
+
+@login_required
+def finish_event_as_json(request, study_group_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+
+    if request.is_ajax() and request.method == "POST":
+        id = request.POST.get('id')
+
+        event = Event.objects.get(id=id)
+
+        if current_student in event.finished_student.all():
+            event.finished_student.add(current_student)
+            data = "success"
+        else:
+            data = "fail: already finished"
+    else:
+        data = "fail"
+
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+@login_required
+def unfinish_event_as_json(request, study_group_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+
+    if request.is_ajax() and request.method == "POST":
+        id = request.POST.get('id')
+
+        event = Event.objects.get(id=id)
+
+        if current_student in event.finished_student.all():
+            event.finished_student.add(current_student)
+            data = "success"
+        else:
+            data = "fail: not finished"
+    else:
+        data = "fail"
+
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+########################
+# Finish event
+########################
+
+@login_required
+def finish_event(request, study_group_id=None, event_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+
+    event = Event.objects.get(id=event_id)
+
+    if current_student not in event.finished_student.all():
+        event.finished_student.add(current_student)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def unfinish_event(request, study_group_id=None, event_id=None):
+    current_student = get_student_from_user(request.user)
+    study_group = StudyGroup.objects.get(unique_id=study_group_id)
+
+    event = Event.objects.get(id=event_id)
+
+    if current_student in event.finished_student.all():
+        event.finished_student.remove(current_student)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 ########################
 # Edit event

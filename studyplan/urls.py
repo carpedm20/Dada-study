@@ -6,6 +6,7 @@ admin.autodiscover()
 from core import views as c_views
 from board import views as b_views
 from event import views as e_views
+from file import views as f_views
 
 STUDY = r'^s/(?P<study_group_id>\w+)/'
 
@@ -18,6 +19,13 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', 'core.views.index'),
+
+    
+    ###############
+    # multiuploader
+    ###############
+
+    #url(r'', include('multiuploader.urls')),
 
     ###############
     # BOARD
@@ -47,6 +55,11 @@ urlpatterns = patterns('',
     url(EVENT + r'delete/$', e_views.delete_event, name='delete_event'),
     url(EVENT + r'create/$', e_views.create_event, name='create_event'),
 
+    #url(EVENT + r'finish/$', e_views.finish_event_as_json, name='finish_event'),
+    #url(EVENT + r'unfinish/$', e_views.unfinish_event_as_json, name='unfinish_event'),
+
+    url(EVENT + r'finish/(?P<event_id>\d+)/$', e_views.finish_event, name='finish_event'),
+    url(EVENT + r'unfinish/(?P<event_id>\d+)/$', e_views.unfinish_event, name='unfinish_event'),
 
     url(r'^s/', include('core.urls', namespace='core')),
 

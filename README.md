@@ -38,8 +38,10 @@ Progress
   - views
     - get_event_as_json
     - edit_event
-    - delete_event
     - create_event
+    - delete_event
+    - finish_event
+    - unfinish_event
 4. School
   - models
     - school
@@ -68,6 +70,7 @@ To-do
 - School : school_index, school_study_group
 - Event : event_complete, event_decomplete
 - Board : file_upload, file_delete, file_info, edit_comment
+- Core : add_leader, delete_leader,
 
 
 Copyright
