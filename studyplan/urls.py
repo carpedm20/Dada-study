@@ -12,6 +12,7 @@ STUDY = r'^s/(?P<study_group_id>\w+)/'
 
 BOARD = STUDY + r'board/'
 EVENT = STUDY + r'event/'
+FILE = STUDY + r'file/'
 
 urlpatterns = patterns('',
     # Examples:
@@ -22,10 +23,11 @@ urlpatterns = patterns('',
 
     
     ###############
-    # multiuploader
+    # jfu
     ###############
 
-    #url(r'', include('multiuploader.urls')),
+    url(FILE + r'upload/', f_views.upload, name = 'jfu_upload' ),
+    url(FILE + r'delete/(?P<pk>\d+)$', f_views.upload_delete, name = 'jfu_delete' ),
 
     ###############
     # BOARD

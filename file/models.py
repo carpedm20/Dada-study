@@ -7,8 +7,8 @@ fs = FileSystemStorage(location='/media/photos')
 
 # Create your models here.
 class File(models.Model):
-    slug = models.SlugField(max_length=50, blank=True)
     file = models.FileField(upload_to=fs)
+    slug = models.SlugField(max_length=50, blank=True)
 
     post = models.ForeignKey(Post, blank=True, null=True)
 

@@ -38,6 +38,7 @@ INSTALLED_APPS = (
 
     'south',
     'django_summernote',
+    'jfu',
 
     'board',
     'core',
