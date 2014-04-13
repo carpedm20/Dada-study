@@ -65,13 +65,17 @@
                     {% for post in board.post_set.all %}
                       <li><a href="{% url 'view_post' study_group_id=study_group.unique_id post_id=post.id board_id=board.id %}">{{ post.name }}</a></li>
                     {% endfor %}
-                    <li><a href="{% url 'create_post' study_group.unique_id board.id %}"><span class="glyphicon glyphicon-plus"></span> Add post</a></li>
+                    {% if user.student in study_group.student_set.all %}
+                      <li><a href="{% url 'create_post' study_group.unique_id board.id %}"><span class="glyphicon glyphicon-plus"></span> Add post</a></li>
+                    {% endif %}
                   <!--</ul>-->
                 <!--</li>-->
               {% endfor %}
-              <li>
-                <button class="btn btn-sm btn-info btn-block" onclick="location.href='{% url 'create_board' study_group_id=study_group.unique_id %}'">Add Board</button>
-              </li>
+              {% if user.student in study_group.student_set.all %}
+                <li>
+                  <button class="btn btn-sm btn-info btn-block" onclick="location.href='{% url 'create_board' study_group_id=study_group.unique_id %}'">Add Board</button>
+                </li>
+              {% endif %}
               <li>
                 <form role="form" action="{% url 'core:join_study_group' %}" method="post">
                   {% csrf_token %}

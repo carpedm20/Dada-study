@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.db import models
 
 from core.models import StudyGroup
@@ -23,3 +24,29 @@ class Event(models.Model):
     def __unicode__(self):
         #return "%s : %s ~ %s" % (self.name, self.start, self.end)
         return "%s" % (self.name)
+
+    def get_start_as_korean(self):
+        if self.start.hour == 12 and self.start.minute == 0:
+            return "%s월 %s일" % (self.start.month,
+                                  self.start.day)
+        else:
+            return "%s월 %s일  %s시 %s분" % (self.start.month,
+                                             self.start.day,
+                                             self.start.hour,
+                                             self.start.minute)
+
+    def get_end_as_korean(self):
+        if self.end.hour == 12 and self.end.minute == 0:
+            return "%s월 %s일" % (self.end.month,
+                                  self.end.day)
+        else:
+            return "%s월 %s일  %s시 %s분" % (self.end.month,
+                                             self.end.day,
+                                             self.end.hour,
+                                             self.end.minute)
+
+    def is_all_day(self):
+        return (self.start.month == self.end.month and self.start.day == self.end.day)
+
+    def get_all_day(self):
+        return "%s월 %s일" % (self.start.month, self.start.day)

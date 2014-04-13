@@ -44,7 +44,10 @@ def index(request, auth_form=None, user_form=None):
             if current_student in event.finished_student.all():
                 finished_event_count += 1
 
-        event_finished_percent = finished_event_count / total_event_count * 100.0
+        try:
+            event_finished_percent = finished_event_count / total_event_count * 100.0
+        except:
+            event_finished_percent = -1
 
         for group in study_group_list:
             if group in current_student.studygroup_set.all():

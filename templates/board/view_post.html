@@ -41,20 +41,27 @@
           </div>
 
           <div class="well" style="margin-top:20px;">
-            <div class="list-group">
-              <a href="#" class="list-group-item active">Uploaded file</a>
+            <ul class="list-group">
+              <li href="#" class="list-group-item active">
+                Uploaded file
+                <span class="badge">{{ post.file_set.all | length }}</span>
+              </li>
               {% for file in post.file_set.all %}
-                <a href="{{ file.file_field.url }}" class="list-group-item">{{ file }}</a>
+              <li class="list-group-item">
+                <a href="{{ file.file_field.url }}">{{ file }}</a>
+              </li>
               {% endfor %}
-            </div>
+            </ul>
 
-            <div class="well">
-              {% load jfutags %}
-              {% jfu 'file/upload.html' study_group_id=study_group.unique_id post_id=post.id %}
-            </div>
+            {% if user.student in study_group.student_set.all %}
+              <div class="well">
+                  {% load jfutags %}
+                  {% jfu 'file/upload.html' study_group_id=study_group.unique_id post_id=post.id %}
+              </div>
+            {% endif %}
           </div>
 
-          <div class="container">
+          <div class="">
             <h3>Comments </h3>
 
             {% for comment in post.comment_set.all %}
@@ -83,11 +90,13 @@
             </div>
             {% endfor %}
 
-            <form class="form-comment" role="form" action="{% url 'create_comment' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}" method="post"> {% csrf_token %}
-              {{ form.as_p }}
-              <input type="hidden" value="{{ next_url }}" name="next_url">
-              <button class="btn btn-sm btn-success btn-block" type="submit">Write comment</button>
-            </form>
+            {% if user.student in study_group.student_set.all %}
+              <form class="form-comment" role="form" action="{% url 'create_comment' study_group_id=study_group.unique_id board_id=board_id post_id=post.id %}" method="post"> {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" value="{{ next_url }}" name="next_url">
+                <button class="btn btn-sm btn-success btn-block" style="margin-bottom: 30px;" type="submit">Write comment</button>
+              </form>
+            {% endif %}
           </div>
 
         </div>

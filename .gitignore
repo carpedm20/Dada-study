@@ -21,6 +21,7 @@ scrapper
 node*
 
 # etc
+venv
 run.sh
 testcase.py
 cheatsheet.md
