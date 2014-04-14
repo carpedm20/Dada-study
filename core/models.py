@@ -13,8 +13,8 @@ class StudyGroup(models.Model):
     name = models.CharField(max_length=200)
     details = models.CharField(max_length=300)
 
-    student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='studygroup_set')
-    bookmarked_student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='bookmarked_student_set')
+    student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='study_group_set')
+    liked_student_set = models.ManyToManyField(Student, blank=True, null=True, related_name='liked_student_set')
 
     tag_set = models.ManyToManyField(Tag, blank=True, null=True)
     board_set = models.ManyToManyField(Board, null=True)

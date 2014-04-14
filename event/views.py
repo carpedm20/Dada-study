@@ -13,6 +13,7 @@ from utils.func import *
 from .models import Event
 from core.models import StudyGroup
 
+
 ########################
 # Calendar
 ########################

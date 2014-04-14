@@ -69,6 +69,11 @@ urlpatterns = patterns('',
     url(EVENT + r'finish/(?P<event_id>\d+)/$', e_views.finish_event, name='finish_event'),
     url(EVENT + r'unfinish/(?P<event_id>\d+)/$', e_views.unfinish_event, name='unfinish_event'),
 
+
+    ###############
+    # CORE
+    ###############
+
     url(r'^s/', include('core.urls', namespace='core')),
 
     url(r'^school/', include('school.urls', namespace='school')),

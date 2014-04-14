@@ -38,7 +38,6 @@
 
 
     <link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" type="text/css" />
-    <link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css" type="text/css" />
     <link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/hanna.css" type="text/css" />
 
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
@@ -112,8 +111,8 @@
             {% endif %}
             <li><a href="{% url 'core:view_help' %}">Help</a></li>
           </ul>
-          <form class="navbar-form navbar-left">
-            <input type="text" class="form-control" placeholder="Search...">
+          <form id="study_group_serach_form" class="navbar-form navbar-left" action="{% url 'core:search_study_group' %}" method="GET">
+            <input type="text" id="search_query" name="search_query" class="form-control" placeholder="Search...">
           </form>
         </div>
       </div>

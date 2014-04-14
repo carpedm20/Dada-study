@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, render_to_response, RequestContex
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django import http
-import json
+import json, random
 
 from .forms import StudyGroupForm, EventForm
 from account.forms import StudentCreateForm
@@ -13,6 +13,7 @@ from board.models import Post
 from board.forms import CommentForm
 
 from utils.func import *
+from utils.say import *
 
 ########################
 # Index
@@ -32,7 +33,7 @@ def index(request, auth_form=None, user_form=None):
             print current_student
 
         # Study group for current User
-        #study_group_list = current_student.studygroup_set.all()
+        #study_group_list = current_student.study_group_set.all()
 
         study_group_list = StudyGroup.objects.all()
         student_list = Student.objects.all()
@@ -50,12 +51,6 @@ def index(request, auth_form=None, user_form=None):
             event_finished_percent = finished_event_count / total_event_count * 100.0
         except:
             event_finished_percent = -1
-
-        for group in study_group_list:
-            if group in current_student.studygroup_set.all():
-                group.isJoined = True
-            else:
-                group.isJoined = False
 
         for student in student_list:
             if student in current_student.friends.all():
@@ -101,6 +96,46 @@ def view_help(request):
     return render(request, template, {'post': post, 'form': form})
 
 ########################
+# Search group
+########################
+
+@login_required
+def search_study_group(request): #, search_query=""):
+    #form = EventForm(data=request.POST or None, user=request.user)
+    template = 'core/search_study_group.html'
+    search_query = request.GET.get('search_query', '')
+
+    study_group_list = StudyGroup.objects.filter(name__contains=search_query)
+
+    s = random.choice(say.keys())
+
+    return render(request,
+                  template,
+                  {'study_group_list' : study_group_list,
+                   'say': say[s] + " : " + s,
+                   'search_query': search_query })
+
+########################
+# Search group with tag
+########################
+
+@login_required
+def search_study_group_with_tag(request): #, search_query=""):
+    #form = EventForm(data=request.POST or None, user=request.user)
+    template = 'core/search_study_group.html'
+    search_tag = request.GET.get('search_tag', '')
+
+    study_group_list = StudyGroup.objects.filter(tag_set__name__contains=search_tag)
+
+    s = random.choice(say.keys())
+
+    return render(request,
+                  template,
+                  {'study_group_list' : study_group_list,
+                   'say': say[s] + " : " + s,
+                   'search_tag': search_tag })
+
+########################
 # Join study group
 ########################
 
@@ -112,10 +147,29 @@ def join_study_group(request):
 
         current_student = get_student_from_user(request.user) 
 
-        if group in current_student.studygroup_set.all():
-          current_student.studygroup_set.remove(group)
+        if group in current_student.study_group_set.all():
+          current_student.study_group_set.remove(group)
         else:
-          current_student.studygroup_set.add(group)
+          current_student.study_group_set.add(group)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+########################
+# Like study group
+########################
+
+@login_required
+def like_study_group(request):
+    if request.method == 'POST':
+        group_unique_id = request.POST.get("group_unique_id", "")
+        group = StudyGroup.objects.get(unique_id=group_unique_id)
+
+        current_student = get_student_from_user(request.user) 
+
+        if current_student in group.liked_student_set.all():
+          group.liked_student_set.remove(current_student)
+        else:
+          group.liked_student_set.add(current_student)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

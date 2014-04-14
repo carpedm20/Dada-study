@@ -4,6 +4,16 @@
  * http://stackoverflow.com/a/5107878
  */
 
+/*
+ * Study group search
+ */
+
+$('.search_query').keypress(function (e) {
+  if (e.which == 13) {
+    $('form#study_group_serach_form').submit();
+  }
+})
+
 $.ajaxSetup({ 
      beforeSend: function(xhr, settings) {
          function getCookie(name) {
