@@ -3,7 +3,7 @@
   <ul class="nav nav-sidebar">
     <li class="{% block active_student %}{% endblock %}">
       <a href="{% url 'core:home' %}">
-        <img class="img-responsive img-thumbnail" src="{{ user.student.gravatar_url }}" /> {{ user.username}}
+        <img class="img-responsive img-thumbnail" src="{{ user.student.gravatar_url }}" /> {{ user.student.get_id }}
       </a>
     </li>
     {% if user.student.school %}
@@ -14,7 +14,7 @@
         </a>
       </li>
     {% endif %}
-    <!--<li class="{% block active_calendar %}{% endblock %}"><a href="{% url 'core:view_calendar' %}"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>-->
+    <li class="{% block active_calendar %}{% endblock %}"><a href="{% url 'core:view_calendar' %}"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
   </ul>
   <ul class="nav nav-sidebar">
     {% for study_group in user.student.studygroup_set.all %}

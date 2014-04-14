@@ -21,6 +21,7 @@ class StudyGroup(models.Model):
 
     creator = models.ForeignKey(Student, related_name='study_group_creator')
     leader = models.ManyToManyField(Student, related_name='leader')
+    liked_student_set = models.ManyToManyField(Student, null=True, related_name='liked_student_set')
 
     is_private = models.BooleanField(default=False)
 

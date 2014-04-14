@@ -21,7 +21,7 @@ from core.models import StudyGroup
 def view_calendar(request, study_group_id=None):
     #form = EventForm(data=request.POST or None, user=request.user)
     study_group = StudyGroup.objects.get(unique_id=study_group_id)
-    template = 'core/view_calendar.html'
+    template = 'event/view_calendar.html'
 
     return render(request, template, {'study_group': study_group, })
 
@@ -281,6 +281,7 @@ def get_event_as_json(request, study_group_id=None):
 
         event_list.append ({ 
             'id':  event.id , 
+            'unique_id':  event.study_group.unique_id , 
             'start':  event_start.strftime ( '%Y-%m- %d %H:%M:%S' ), 
             'end':  event_end.strftime ( '%Y-%m- %d %H:%M:%S' ), 
             'title':  event.name, 

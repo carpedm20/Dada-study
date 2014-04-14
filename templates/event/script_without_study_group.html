@@ -5,6 +5,9 @@ var border_color = '#378006'
 $(document).ready(function() {
   var options = "";
 
+  var student_list = [];
+  var email_list = [];
+
   for (var i=0; i<student_list.length; i++) {
     options += (i+1) + " : " + student_list[i] + "  ";
   }
@@ -25,43 +28,15 @@ $(document).ready(function() {
     selectHelper: true,
     eventColor: border_color,
 
-    editable: true,
+    //editable: true,
 
     eventClick: function(calEvent, jsEvent, view) {
-      $(this).css('border-color', 'red');
-
-      var title = calEvent.title.split('-')[0].trim();
-      var isDelete = confirm('Are you sure to delete "' + title + '"');
-      
-      if (isDelete) {
-        jQuery.post(
-          '{% url 'delete_event' study_group_id='0' %}',
-          {
-            id: calEvent.id,
-          }
-        );
-        $(this).remove()
-      } else {
-        $(this).css('border-color', border_color);
-      }
-      //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-      //alert('View: ' + view.name);
-
-      // change the border color just for fun
-    },
-    eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc) {
-      if (!confirm("Are you sure about this change?")) {
-        revertFunc();
-      } else {
-        jQuery.post(
-          '{% url 'edit_event' study_group_id='0' %}',
-          {
-            id: event.id,
-            dayDelta: dayDelta,
-            minuteDelta: minuteDelta,
-          }
-        );
-      }
+      jQuery.post(
+        '/s/'+calEvent.unique_id+'/event/finish/'+calEvent.id+'/',
+        {
+          id: calEvent.id,
+        }
+      );
     },
     events: function(start, end, callback) {
       $.ajax({
@@ -91,6 +66,7 @@ $(document).ready(function() {
             events.push({
               // title: $(this).attr('title') + "\r\n" + student_list,
               id: $(this).attr('id'),
+              unique_id: $(this).attr('unique_id'),
               title: $(this).attr('title') + " - " + student_list_as_string,
               start: $(this).attr('start'),
               end: $(this).attr('end'),

@@ -82,7 +82,7 @@ def index(request, auth_form=None, user_form=None):
 @login_required
 def view_calendar(request, study_group_id=None):
     #form = EventForm(data=request.POST or None, user=request.user)
-    template = 'core/view_calendar.html'
+    template = 'event/view_calendar_without_subnav.html'
 
     return render(request, template, {'total_calendar': True})
 
@@ -126,7 +126,7 @@ def join_study_group(request):
 @login_required
 def view_study_group(request, study_group_id=None):
     study_group = StudyGroup.objects.get(unique_id=study_group_id)
-    template = 'core/view_calendar.html'
+    template = 'event/view_calendar.html'
 
     return render(request, template, {'study_group': study_group,  })
 

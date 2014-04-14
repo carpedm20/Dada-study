@@ -30,11 +30,11 @@
                     <li class="list-group-item">
 
                       {% if file.uploader == user.student %}
-                        <span class="badge badge-me">{{ file.uploader.get_id }}</span>,
+                        <span class="badge badge-me">{{ file.uploader.get_id }}</span>
                       {% elif file.uploader in user.student.friends.all %}
-                        <span class="badge badge-friend">{{ file.uploader.get_id }}</span>,
+                        <span class="badge badge-friend">{{ file.uploader.get_id }}</span>
                       {% else %}
-                        <span class="badge">{{ file.uploader.get_id }}</span>,
+                        <span class="badge">{{ file.uploader.get_id }}</span>
                       {% endif %}
 
                       <a href="{{ file.file_field.url }}">{{ file }}</a>
