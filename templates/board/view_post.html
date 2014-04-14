@@ -33,7 +33,16 @@
           {% endif %}
 
           <h2>{{ post }}</h2>
-          <p>작성자 : <a href="#">{{ post.creator }}</a> | {{ post.created_at }}</p>
+          <p>작성자 :
+            {% if post.creator == user.student %}
+              <span class="badge badge-me">{{ post.creator.get_id }}</span>, 
+            {% elif post.creator in user.student.friends.all %}
+              <span class="badge badge-friend">{{ post.creator.get_id }}</span>, 
+            {% else %}
+              <span class="badge">{{ post.creator.get_id }}</span>, 
+            {% endif %}
+
+           | {{ post.created_at }}</p>
           <p>본 사람 : 
 
           {% for student in post.viewed_student.all %}

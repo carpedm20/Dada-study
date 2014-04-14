@@ -28,7 +28,15 @@
                 {% for post in board.post_set.all %}
                   {% for file in post.file_set.all %}
                     <li class="list-group-item">
-                      <span class="badge">{{ file.uploader.get_id }}</span>
+
+                      {% if file.uploader == user.student %}
+                        <span class="badge badge-me">{{ file.uploader.get_id }}</span>,
+                      {% elif file.uploader in user.student.friends.all %}
+                        <span class="badge badge-friend">{{ file.uploader.get_id }}</span>,
+                      {% else %}
+                        <span class="badge">{{ file.uploader.get_id }}</span>,
+                      {% endif %}
+
                       <a href="{{ file.file_field.url }}">{{ file }}</a>
                     </li>
                   {% endfor %}
