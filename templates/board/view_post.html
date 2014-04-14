@@ -35,9 +35,9 @@
           <h2>{{ post }}</h2>
           <p>작성자 :
             {% if post.creator == user.student %}
-              <span class="badge badge-me">{{ post.creator.get_id }}</span>, 
+              <span class="badge badge-me">{{ post.creator.get_id }}</span>
             {% elif post.creator in user.student.friends.all %}
-              <span class="badge badge-friend">{{ post.creator.get_id }}</span>, 
+              <span class="badge badge-friend">{{ post.creator.get_id }}</span>
             {% else %}
               <span class="badge">{{ post.creator.get_id }}</span>, 
             {% endif %}
@@ -70,7 +70,7 @@
               {% for file in post.file_set.all %}
               <li class="list-group-item">
                 {% if file.uploader == user.student %}
-                  <span class="badge badge-me">{{ file.uploader.get_id }}</span>, 
+                  <span class="badge badge-me">{{ file.uploader.get_id }}</span>
                 {% elif file.uploader in user.student.friends.all %}
                   <span class="badge badge-friend">{{ file.uploader.get_id }}</span>, 
                 {% else %}
