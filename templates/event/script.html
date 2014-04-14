@@ -29,11 +29,13 @@ $(document).ready(function() {
       //right: 'month',//,agendaWeek',
     },
 
-    selectable: true,
-    selectHelper: true,
     eventColor: border_color,
 
+    {% if user.student in study_group.student_set.all %}
+
     editable: true,
+    selectable: true,
+    selectHelper: true,
 
     select: function(start, end, allDay) {
       var title = prompt('Event Title:');
@@ -144,6 +146,8 @@ $(document).ready(function() {
         );
       }
     },
+
+    {% endif %}
     events: function(start, end, callback) {
       $.ajax({
         url: '{% url 'get_event' study_group.unique_id %}',
