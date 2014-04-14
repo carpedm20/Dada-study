@@ -255,8 +255,9 @@ def view_calendar(request, study_group_id=None):
 
 @login_required
 def get_event_as_json(request, study_group_id=None): 
+    current_student = get_student_from_user(request.user)
+
     if study_group_id == '0':
-        current_student = get_student_from_user(request.user)
         events = current_student.assigned_to.all()
     else:
         study_group = StudyGroup.objects.get(unique_id=study_group_id)
@@ -279,6 +280,11 @@ def get_event_as_json(request, study_group_id=None):
 
         student_list = ','.join(student_list)
 
+        if current_student in event.finished_student.all():
+            finished = True
+        else:
+            finished = False
+
         event_list.append ({ 
             'id':  event.id , 
             'unique_id':  event.study_group.unique_id , 
@@ -287,6 +293,7 @@ def get_event_as_json(request, study_group_id=None):
             'title':  event.name, 
             'allDay': Allday,
             'student_list': student_list,
+            'finished': finished,
         })
 
     if len(event_list)  ==  0 : 

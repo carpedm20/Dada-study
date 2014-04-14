@@ -169,15 +169,30 @@ $(document).ready(function() {
             if (student_list.length > 0)
               student_list_as_string = student_list_as_string.substr(0, student_list_as_string.length - 2);
 
-            events.push({
-              // title: $(this).attr('title') + "\r\n" + student_list,
-              id: $(this).attr('id'),
-              title: $(this).attr('title') + " - " + student_list_as_string,
-              start: $(this).attr('start'),
-              end: $(this).attr('end'),
-              allDay: $(this).attr('allDay'),
-              //student_list: $(this).attr('student_list'),
-            });
+            if ($(this).attr('finished')) {
+              events.push({
+                // title: $(this).attr('title') + "\r\n" + student_list,
+                id: $(this).attr('id'),
+                unique_id: $(this).attr('unique_id'),
+                title: $(this).attr('title') + " - " + student_list_as_string,
+                start: $(this).attr('start'),
+                end: $(this).attr('end'),
+                allDay: $(this).attr('allDay'),
+                //student_list: $(this).attr('student_list'),
+                className: 'event-finished',
+              });
+            } else {
+              events.push({
+                // title: $(this).attr('title') + "\r\n" + student_list,
+                id: $(this).attr('id'),
+                unique_id: $(this).attr('unique_id'),
+                title: $(this).attr('title') + " - " + student_list_as_string,
+                start: $(this).attr('start'),
+                end: $(this).attr('end'),
+                allDay: $(this).attr('allDay'),
+                //student_list: $(this).attr('student_list'),
+              });
+            }
           });
           callback(events);
         }
