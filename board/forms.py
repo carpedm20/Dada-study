@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django import forms
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
@@ -43,7 +44,7 @@ class BoardForm(forms.ModelForm):
 
 class PostForm(forms.ModelForm):
     name = forms.CharField(label="Post name")
-    content = forms.CharField(widget=SummernoteWidget())
+    content = forms.CharField(widget=SummernoteWidget(), help_text='사진은 드래그 앤 드롭으로 첨부 가능합니다 :)')
     
     tag_set = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
  

@@ -91,7 +91,9 @@ def sign_in_view(request):
     form = StudentAuthForm(request.POST or None)
     template = 'account/sign_in.html'
 
-    return render(request, template, {'form': form,  })
+    s = random.choice(say.keys())
+
+    return render(request, template, {'form': form, 'say' : say[s] + " : " + s})
     
 
 ########################

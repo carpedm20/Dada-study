@@ -66,7 +66,7 @@
           <div class="well" style="margin-top:20px;">
             <ul class="list-group">
               <li href="#" class="list-group-item active">
-                Uploaded file
+                <strong style="color:white;">Uploaded file</strong>
                 <span class="badge">{{ post.file_set.all | length }}</span>
               </li>
               {% for file in post.file_set.all %}
@@ -88,6 +88,9 @@
               <div class="well">
                   {% load jfutags %}
                   {% jfu 'file/upload.html' study_group_id=study_group.unique_id post_id=post.id %}
+                <div class="block text-center">
+                  <p class="helptext">드래그 앤 드롭으로 첨부 가능 :)</p>
+                </div>
               </div>
             {% endif %}
           </div>

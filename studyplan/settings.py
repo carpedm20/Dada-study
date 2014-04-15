@@ -51,6 +51,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -76,7 +77,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'kr-ko'
 
 TIME_ZONE = 'UTC'
 
@@ -132,7 +133,8 @@ SUMMERNOTE_CONFIG = {
     'height': '480',
 
     # Set editor language/locale
-    'lang': 'en-US',
+    #'lang': 'en-US',
+    'lang': 'ko-KR',
 
     # Customize toolbar buttons
     'toolbar': [
