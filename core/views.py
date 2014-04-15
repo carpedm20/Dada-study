@@ -95,6 +95,7 @@ def view_help(request):
 
     return render(request, template, {'post': post, 'form': form})
 
+
 ########################
 # Search group
 ########################
@@ -134,6 +135,20 @@ def search_study_group_with_tag(request): #, search_query=""):
                   {'study_group_list' : study_group_list,
                    'say': say[s] + " : " + s,
                    'search_tag': search_tag })
+
+########################
+# Do not display calendar guide
+########################
+
+@login_required
+def no_calendar_guide(request):
+    current_student = get_student_from_user(request.user) 
+
+    current_student.display_calendar_guide = not current_student.display_calendar_guide
+    current_student.save()
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 ########################
 # Join study group

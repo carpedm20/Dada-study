@@ -40,8 +40,13 @@ $(document).ready(function() {
     select: function(start, end, allDay) {
       var title = prompt('Event Title:');
 
+      $('#calendar-guide-step-1>span').removeClass('hide');
+
       if (title) {
         var option = prompt(options+':');
+
+        if (option != "")
+          $('#calendar-guide-step-2>span').removeClass('hide');
 
         var assigned_list = [];
         option = option.split(',')
@@ -81,6 +86,7 @@ $(document).ready(function() {
             assigned_list: assigned_list.toString(),
           }
         );
+
         //location.href = "{% url 'core:view_study_group' study_group_id=study_group.unique_id %}";
       }
       calendar.fullCalendar('unselect');
@@ -123,6 +129,8 @@ $(document).ready(function() {
             id: calEvent.id,
           }
         );
+        $('#calendar-guide-step-4>span').removeClass('hide');
+
         $(this).remove()
       } else {
         $(this).css('border-color', border_color);
@@ -144,6 +152,8 @@ $(document).ready(function() {
             minuteDelta: minuteDelta,
           }
         );
+
+        $('#calendar-guide-step-3>span').removeClass('hide');
       }
     },
 

@@ -13,7 +13,6 @@
                 </li>
                 <!--<li class="nav-header"><a href="#">Users</a></li>-->
                 {% for student in study_group.student_set.all %}
-                  {% ifnotequal student.assigned_to.all|length 0 %}
                   <li class="dropdown">
                     <a class="dropdown-toggle sub_nav_gravatar" href="#" data-toggle="dropdown"><img src="{{ student.gravatar_small_url }}" />
                       {{ student.get_id }}
@@ -44,17 +43,9 @@
                           {% endif %}
                         {% endif %}
                       {% endfor %}
+                      <li><a href="{% url 'account:view_profile' %}?user_id={{ student.user.username }}">View profile</a></li>
                     </ul>
                   </li>
-                  {% else %}
-                  <li>
-                    <a class="sub_nav_gravatar" href="#" data-toggle="dropdown"><img src="{{ student.gravatar_small_url }}" /> {{ student.get_id }}
-                    {% if student in study_group.leader.all %}
-                      <span class="glyphicon glyphicon-tower"></span>
-                    {% endif %}
-                    </a>
-                  </li>
-                  {% endifnotequal %}
                 {% endfor %}
                 <li class="nav-header"><a href="{% url 'core:view_study_group' study_group_id=study_group.unique_id %}"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
                 <li class="nav-header"><a href="{% url 'view_file_list' study_group_id=study_group.unique_id %}"><span class="glyphicon glyphicon-file"></span> File list</a></li>

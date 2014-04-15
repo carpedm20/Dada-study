@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='home'),
 
     url(r'^calendar/$', views.view_calendar, name='view_calendar'),
+    url(r'^no-calendar-guide/$', views.no_calendar_guide, name='no_calendar_guide'),
+
     url(r'^search/tag/', views.search_study_group_with_tag, name='search_study_group_with_tag'),
     url(r'^search/', views.search_study_group, name='search_study_group'),
     url(r'^help/$', views.view_help, name='view_help'),

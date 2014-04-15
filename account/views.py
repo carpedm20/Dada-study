@@ -9,12 +9,39 @@ from django.template.response import TemplateResponse
 from django.utils.functional import lazy
 from django.views.generic import CreateView
 from django.shortcuts import render, redirect
+import random
 
 from .forms import StudentCreateForm, StudentAuthForm
 from core.views import index
 from utils.func import *
+from utils.say import *
 
 reverse_lazy = lambda name=None, *args: lazy(reverse, str)(name, args=args)
+
+
+########################
+# View profile
+########################
+
+@login_required
+def view_profile(request): #, search_query=""):
+    #form = EventForm(data=request.POST or None, user=request.user)
+    template = 'account/view_profile.html'
+
+    try:
+        user_id = request.GET.get('user_id','')
+        student = Student.objects.get(user__username=user_id)
+    except:
+        student = None
+        pass
+
+    s = random.choice(say.keys())
+
+    return render(request,
+                  template,
+                  {'student' : student,
+                   'say' : say[s] + " : " + s,})
+
 
 ########################
 # Follow friends

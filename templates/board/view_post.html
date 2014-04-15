@@ -34,24 +34,26 @@
 
           <h2>{{ post }}</h2>
           <p>작성자 :
+          <a href="{% url 'account:view_profile' %}?user_id={{ post.creator.user.username }}">
             {% if post.creator == user.student %}
-              <span class="badge badge-me">{{ post.creator.get_id }}</span>
+              <span class="badge badge-me">{{ post.creator.get_id }}</span></a>
             {% elif post.creator in user.student.friends.all %}
-              <span class="badge badge-friend">{{ post.creator.get_id }}</span>
+              <span class="badge badge-friend">{{ post.creator.get_id }}</span></a>
             {% else %}
-              <span class="badge">{{ post.creator.get_id }}</span>, 
+              <span class="badge">{{ post.creator.get_id }}</span></a>
             {% endif %}
 
            | {{ post.created_at }}</p>
           <p>본 사람 : 
 
           {% for student in post.viewed_student.all %}
+            <a href="{% url 'account:view_profile' %}?user_id={{ student.user.username }}">
             {% if student == user.student %}
-              <span class="badge badge-me">{{ student.get_id }}</span>, 
+              <span class="badge badge-me">{{ student.get_id }}</span></a>, 
             {% elif student in user.student.friends.all %}
-              <span class="badge badge-friend">{{ student.get_id }}</span>, 
+              <span class="badge badge-friend">{{ student.get_id }}</span></a>, 
             {% else %}
-              <span class="badge">{{ student.get_id }}</span>, 
+              <span class="badge">{{ student.get_id }}</span></a>, 
             {% endif %}
           {% endfor %}
           </p>
@@ -69,12 +71,13 @@
               </li>
               {% for file in post.file_set.all %}
               <li class="list-group-item">
+                <a href="{% url 'account:view_profile' %}?user_id={{ file.uploader.user.username }}">
                 {% if file.uploader == user.student %}
-                  <span class="badge badge-me">{{ file.uploader.get_id }}</span>
+                  <span class="badge badge-me pull-right">{{ file.uploader.get_id }}</span></a>
                 {% elif file.uploader in user.student.friends.all %}
-                  <span class="badge badge-friend">{{ file.uploader.get_id }}</span>, 
+                  <span class="badge badge-friend pull-right">{{ file.uploader.get_id }}</span></a>
                 {% else %}
-                  <span class="badge">{{ file.uploader.get_id }}</span>, 
+                  <span class="badge pull-right">{{ file.uploader.get_id }}</span></a>
                 {% endif %}
                 <a href="{{ file.file_field.url }}">{{ file }}</a>
               </li>
@@ -103,11 +106,21 @@
                 </div>
               {% endif %}
               <div class="pull-left">
-                <img class="img-responsive img-thumbnail comment-thumbnail" src="{{ comment.creator.gravatar_middle_url }}">
+                <a href="{% url 'account:view_profile' %}?user_id={{ comment.creator.user.username }}">
+                  <img class="img-responsive img-thumbnail comment-thumbnail" src="{{ comment.creator.gravatar_middle_url }}">
+                </a>
               </div>
               <div class="comment-content">
                 <div class="comment-author">
-                  <span class="name"><a href=#" rel="external nofollow" class="url">{{ comment.creator }}</a></span>
+                  <a href="{% url 'account:view_profile' %}?user_id={{ comment.creator.user.username }}">
+                  {% if comment.creator == user.student %}
+                    <span class="badge badge-me">{{ comment.creator.get_id }}</span></a>
+                  {% elif comment.creator in user.student.friends.all %}
+                    <span class="badge badge-friend">{{ comment.creator.get_id }}</span></a>
+                  {% else %}
+                    <span class="badge">{{ comment.creator.get_id }}</span></a>
+                  {% endif %}
+
                   <small>{{ comment.created_at }}</small>
                 </div>
 

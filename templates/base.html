@@ -104,7 +104,7 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
-              <li class="{% block profile %}{% endblock %}"><a href="{% url 'core:home' %}">{{ user.username }}</a></li>
+              <li class="{% block profile %}{% endblock %}"><a href="{% url 'account:view_profile' %}?user_id={{ user.username }}">{{ user.username }}</a></li>
               <li class="{% block active_sign_out %}{% endblock %}"><a href="{% url 'account:sign_out' %}">Sign out</a></li>
             {% else %}
               <li class="{% block active_sign_in %}{% endblock %}"><a href="{% url 'account:sign_in' %}">Sign in</a></li>

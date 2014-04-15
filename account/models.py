@@ -9,6 +9,8 @@ from core.models import * #
 class Student(models.Model):
     user = models.OneToOneField(User)
 
+    display_calendar_guide = models.BooleanField(default=True)
+
     school = models.ForeignKey(School, null=True)
     friends = models.ManyToManyField('self', symmetrical=True, null=True)
 
